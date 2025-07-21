@@ -1,6 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import cookieParser from "cookie-parser";
+import authRoutes from './routes/auth.routes.js';
 
 
 dotenv.config();
@@ -13,6 +14,8 @@ app.use(cookieParser());
 app.get("/", (req, res) => {
   res.send("Hello from Roomora backend!");
 });
+
+app.use("/api/v1/auth", authRoutes)
 
 const PORT = process.env.PORT || 3000;
 

@@ -2,6 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cookieParser from "cookie-parser";
 import authRoutes from './routes/auth.routes.js';
+import hotelRoutes from './routes/hotel.routes.js';
 
 
 dotenv.config();
@@ -16,6 +17,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/v1/auth", authRoutes)
+app.use("/api/v1/hotel", hotelRoutes);
 
 const PORT = process.env.PORT || 3000;
 

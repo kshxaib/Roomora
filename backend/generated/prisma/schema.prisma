@@ -27,6 +27,24 @@ model User {
   password  String
   role      UserRole @default(USER)
   avatarUrl String?  @default("https://static.vecteezy.com/system/resources/previews/002/318/271/original/user-profile-icon-free-vector.jpg")
+
+  hotels Hotel[] @relation("UserHotels")
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Hotel {
+  id          String   @id @default(uuid())
+  ownerId     String
+  owner       User     @relation("UserHotels", fields: [ownerId], references: [id])
+  name        String
+  description String
+  location    String
+  price       Float
+  rating      Float    @default(0)
+  images      String[]
+  amenities   String[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }

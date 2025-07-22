@@ -136,11 +136,31 @@ exports.Prisma.HotelScalarFieldEnum = {
   ownerId: 'ownerId',
   name: 'name',
   description: 'description',
-  location: 'location',
+  city: 'city',
+  address: 'address',
   price: 'price',
   rating: 'rating',
   images: 'images',
   amenities: 'amenities',
+  totalRooms: 'totalRooms',
+  availableRooms: 'availableRooms',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.BookingScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  hotelId: 'hotelId',
+  checkIn: 'checkIn',
+  checkOut: 'checkOut',
+  guests: 'guests',
+  totalAmount: 'totalAmount',
+  status: 'status',
+  paymentId: 'paymentId',
+  paymentOrderId: 'paymentOrderId',
+  paymentSignature: 'paymentSignature',
+  isPaid: 'isPaid',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -165,9 +185,17 @@ exports.UserRole = exports.$Enums.UserRole = {
   USER: 'USER'
 };
 
+exports.BookingStatus = exports.$Enums.BookingStatus = {
+  BOOKED: 'BOOKED',
+  CANCELLED: 'CANCELLED',
+  COMPLETED: 'COMPLETED',
+  PENDING: 'PENDING'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
-  Hotel: 'Hotel'
+  Hotel: 'Hotel',
+  Booking: 'Booking'
 };
 
 /**

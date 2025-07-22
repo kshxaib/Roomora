@@ -20,6 +20,13 @@ enum UserRole {
   USER
 }
 
+enum BookingStatus {
+  BOOKED
+  CANCELLED
+  COMPLETED
+  PENDING
+}
+
 model User {
   id        String   @id @default(uuid())
   name      String
@@ -28,7 +35,8 @@ model User {
   role      UserRole @default(USER)
   avatarUrl String?  @default("https://static.vecteezy.com/system/resources/previews/002/318/271/original/user-profile-icon-free-vector.jpg")
 
-  hotels Hotel[] @relation("UserHotels")
+  hotels   Hotel[]   @relation("UserHotels")
+  bookings Booking[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -40,11 +48,40 @@ model Hotel {
   owner       User     @relation("UserHotels", fields: [ownerId], references: [id])
   name        String
   description String
-  location    String
+  city        String
+  address     String
   price       Float
   rating      Float    @default(0)
   images      String[]
   amenities   String[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+
+  totalRooms     Int
+  availableRooms Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  bookings Booking[]
+}
+
+model Booking {
+  id          String        @id @default(uuid())
+  userId      String
+  hotelId     String
+  checkIn     DateTime
+  checkOut    DateTime
+  guests      Int
+  totalAmount Float
+  status      BookingStatus @default(PENDING)
+
+  paymentId        String?
+  paymentOrderId   String?
+  paymentSignature String?
+  isPaid           Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user  User  @relation(fields: [userId], references: [id])
+  hotel Hotel @relation(fields: [hotelId], references: [id])
 }

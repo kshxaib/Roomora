@@ -127,6 +127,8 @@ exports.Prisma.UserScalarFieldEnum = {
   password: 'password',
   role: 'role',
   avatarUrl: 'avatarUrl',
+  totalEarnings: 'totalEarnings',
+  walletBalance: 'walletBalance',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -161,6 +163,31 @@ exports.Prisma.BookingScalarFieldEnum = {
   paymentOrderId: 'paymentOrderId',
   paymentSignature: 'paymentSignature',
   isPaid: 'isPaid',
+  partnerAmount: 'partnerAmount',
+  adminAmount: 'adminAmount',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.EarningsScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  bookingId: 'bookingId',
+  amount: 'amount',
+  type: 'type',
+  isWithdrawn: 'isWithdrawn',
+  withdrawnAt: 'withdrawnAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.WithdrawalScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  amount: 'amount',
+  status: 'status',
+  bankDetails: 'bankDetails',
+  remarks: 'remarks',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -192,10 +219,18 @@ exports.BookingStatus = exports.$Enums.BookingStatus = {
   PENDING: 'PENDING'
 };
 
+exports.WithdrawalStatus = exports.$Enums.WithdrawalStatus = {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   Hotel: 'Hotel',
-  Booking: 'Booking'
+  Booking: 'Booking',
+  Earnings: 'Earnings',
+  Withdrawal: 'Withdrawal'
 };
 
 /**

@@ -1,14 +1,24 @@
-import { db } from "../utils/db";
+import { db } from "../utils/db.js";
+import { uploadOnCloudinary } from "../utils/cloudinary.js";
+import fs from 'fs';
 
 export const addNewHotel = async (req, res) => {
   try {
-    const { name, description, city, address, price, images, amenities, totalRooms } = req.body;
+    const { name, description, city, address, price, amenities, totalRooms } = req.body;
     const userId = req.user.id;
 
-    if (!name || !description || !city || !address || !price || !images || !amenities || !totalRooms) {
+    if (!name || !description || !city || !address || !price || !amenities || !totalRooms) {
       return res.status(400).json({
         success: false,
-        message: "All fields are required",
+        message: "All fields except images are required",
+      });
+    }
+
+    // Check if files were uploaded
+    if (!req.files || req.files.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: "At least one image is required",
       });
     }
 
@@ -21,9 +31,28 @@ export const addNewHotel = async (req, res) => {
     });
 
     if (existingHotel) {
+      // Clean up uploaded files if hotel already exists
+      req.files.forEach(file => {
+        fs.unlinkSync(file.path);
+      });
       return res.status(400).json({
         success: false,
         message: "Hotel with this name already exists in this city",
+      });
+    }
+
+    // Upload images to Cloudinary
+    const imageUploadPromises = req.files.map(file => uploadOnCloudinary(file.path));
+    const uploadedImages = await Promise.all(imageUploadPromises);
+    
+    // Filter out any failed uploads
+    const successfulUploads = uploadedImages.filter(img => img !== null);
+    const imageUrls = successfulUploads.map(img => img.secure_url);
+
+    if (imageUrls.length === 0) {
+      return res.status(500).json({
+        success: false,
+        message: "Failed to upload hotel images",
       });
     }
 
@@ -34,8 +63,8 @@ export const addNewHotel = async (req, res) => {
         city,
         address,
         price: parseFloat(price),
-        images,
-        amenities,
+        images: imageUrls,
+        amenities: Array.isArray(amenities) ? amenities : [amenities],
         totalRooms: parseInt(totalRooms),
         availableRooms: parseInt(totalRooms),
         ownerId: userId,
@@ -48,6 +77,15 @@ export const addNewHotel = async (req, res) => {
       hotel: newHotel,
     });
   } catch (error) {
+    // Clean up any uploaded files on error
+    if (req.files) {
+      req.files.forEach(file => {
+        if (fs.existsSync(file.path)) {
+          fs.unlinkSync(file.path);
+        }
+      });
+    }
+    
     console.error("Error adding new hotel:", error.message);
     return res.status(500).json({
       success: false,
@@ -116,18 +154,29 @@ export const updateHotel = async (req, res) => {
   try {
     const hotelId = req.params.id;
     const userId = req.user.id;
-    const { name, description, city, address, price, images, amenities, totalRooms } = req.body;
+    const { name, description, city, address, price, amenities, totalRooms } = req.body;
 
-    if (!name || !description || !city || !address || !price || !images || !amenities || !totalRooms) {
+    if (!name || !description || !city || !address || !price || !amenities || !totalRooms) {
+      // Clean up uploaded files if validation fails
+      if (req.files) {
+        req.files.forEach(file => {
+          fs.unlinkSync(file.path);
+        });
+      }
       return res.status(400).json({
         success: false,
-        message: "All fields are required",
+        message: "All fields except images are required",
       });
     }
 
     const hotel = await db.hotel.findUnique({ where: { id: hotelId } });
 
     if (!hotel) {
+      if (req.files) {
+        req.files.forEach(file => {
+          fs.unlinkSync(file.path);
+        });
+      }
       return res.status(404).json({
         success: false,
         message: "Hotel not found",
@@ -135,6 +184,11 @@ export const updateHotel = async (req, res) => {
     }
 
     if (hotel.ownerId !== userId) {
+      if (req.files) {
+        req.files.forEach(file => {
+          fs.unlinkSync(file.path);
+        });
+      }
       return res.status(403).json({
         success: false,
         message: "You are not authorized to update this hotel",
@@ -152,10 +206,33 @@ export const updateHotel = async (req, res) => {
     });
 
     if (duplicate) {
+      if (req.files) {
+        req.files.forEach(file => {
+          fs.unlinkSync(file.path);
+        });
+      }
       return res.status(400).json({
         success: false,
         message: "Hotel with this name already exists in this city",
       });
+    }
+
+    let imageUrls = hotel.images;
+    
+    // If new images were uploaded
+    if (req.files && req.files.length > 0) {
+      // Upload new images to Cloudinary
+      const imageUploadPromises = req.files.map(file => uploadOnCloudinary(file.path));
+      const uploadedImages = await Promise.all(imageUploadPromises);
+      
+      // Filter out any failed uploads
+      const successfulUploads = uploadedImages.filter(img => img !== null);
+      const newImageUrls = successfulUploads.map(img => img.secure_url);
+
+      if (newImageUrls.length > 0) {
+        imageUrls = [...hotel.images, ...newImageUrls]; // Combine old and new images
+        // Or replace all images: imageUrls = newImageUrls;
+      }
     }
 
     const updatedHotel = await db.hotel.update({
@@ -166,10 +243,9 @@ export const updateHotel = async (req, res) => {
         city,
         address,
         price: parseFloat(price),
-        images,
-        amenities,
+        images: imageUrls,
+        amenities: Array.isArray(amenities) ? amenities : [amenities],
         totalRooms: parseInt(totalRooms),
-        // Adjust availableRooms only if totalRooms changes
         availableRooms:
           parseInt(totalRooms) < hotel.totalRooms
             ? Math.max(0, hotel.availableRooms - (hotel.totalRooms - parseInt(totalRooms)))
@@ -183,6 +259,15 @@ export const updateHotel = async (req, res) => {
       hotel: updatedHotel,
     });
   } catch (error) {
+    // Clean up any uploaded files on error
+    if (req.files) {
+      req.files.forEach(file => {
+        if (fs.existsSync(file.path)) {
+          fs.unlinkSync(file.path);
+        }
+      });
+    }
+    
     console.error("Error updating hotel:", error.message);
     return res.status(500).json({
       success: false,

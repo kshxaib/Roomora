@@ -21,6 +21,22 @@ enum BookingStatus {
   PENDING
 }
 
+enum EarningsType {
+  PARTNER_EARNINGS
+  ADMIN_EARNINGS
+}
+
+enum WithdrawalStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum PaymentMethodType {
+  UPI
+  BANK_ACCOUNT
+}
+
 model User {
   id        String   @id @default(uuid())
   name      String
@@ -28,12 +44,37 @@ model User {
   password  String
   role      UserRole @default(USER)
   avatarUrl String?  @default("https://static.vecteezy.com/system/resources/previews/002/318/271/original/user-profile-icon-free-vector.jpg")
+  totalEarnings Float @default(0) 
+  walletBalance Float @default(0) 
 
+  paymentMethods PaymentMethod[]
+  
   hotels    Hotel[]  @relation("UserHotels")
   bookings  Booking[]
+  earnings  Earnings[]
+  withdrawals Withdrawal[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model PaymentMethod {
+  id          String    @id @default(uuid())
+  userId      String
+  type        PaymentMethodType
+  upiId       String?
+  bankName    String?
+  accountNumber String?
+  ifscCode    String?
+  accountHolderName String?
+  isDefault   Boolean   @default(false)
+
+  withdrawals Withdrawal[]
+
+  user        User      @relation(fields: [userId], references: [id])
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 }
 
 model Hotel {
@@ -42,8 +83,8 @@ model Hotel {
   owner         User     @relation("UserHotels", fields: [ownerId], references: [id])
   name          String
   description   String
-  city      String  
-  address      String  
+  city          String  
+  address       String  
   price         Float
   rating        Float    @default(0)
   images        String[]
@@ -72,10 +113,44 @@ model Booking {
   paymentOrderId    String?        
   paymentSignature  String?        
   isPaid            Boolean        @default(false) 
+  partnerAmount     Float?         
+  adminAmount       Float?         
 
   createdAt         DateTime       @default(now())
   updatedAt         DateTime       @updatedAt
 
   user              User           @relation(fields: [userId], references: [id])
   hotel             Hotel          @relation(fields: [hotelId], references: [id])
+  earnings          Earnings[]
+}
+
+model Earnings {
+  id          String    @id @default(uuid())
+  userId      String
+  bookingId   String
+  amount      Float
+  type        EarningsType
+  isWithdrawn Boolean   @default(false)
+  withdrawnAt DateTime?
+
+  user        User      @relation(fields: [userId], references: [id])
+  booking     Booking   @relation(fields: [bookingId], references: [id])
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Withdrawal {
+  id          String    @id @default(uuid())
+  userId      String
+  amount      Float
+  status      WithdrawalStatus @default(PENDING)
+  paymentMethodId String
+  remarks     String?
+
+  user        User      @relation(fields: [userId], references: [id])
+  paymentMethod PaymentMethod @relation(fields: [paymentMethodId], references: [id])
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 }

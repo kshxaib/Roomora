@@ -17,7 +17,8 @@ export const authMiddleware = async (req, res, next) => {
                 email: true,
                 name: true,
                 role: true,
-                avatarUrl: true
+                avatarUrl: true,
+                walletBalance: true
             }
         });
 

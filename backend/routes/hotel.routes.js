@@ -5,7 +5,7 @@ import { uploadHotelImages } from '../middleware/multer.middleware.js';
 
 const hotelRoutes = express.Router()
 
-hotelRoutes.post("/", authMiddleware, isPartner, upload(),addNewHotel)
+hotelRoutes.post("/", authMiddleware, isPartner, uploadHotelImages, addNewHotel)
 hotelRoutes.get("/", authMiddleware, getAllHotels)
 hotelRoutes.get("/:id", authMiddleware, getHotelById)
 hotelRoutes.put("/:id", authMiddleware, isPartner, uploadHotelImages, updateHotel)

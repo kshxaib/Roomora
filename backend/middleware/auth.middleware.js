@@ -69,7 +69,7 @@ export const isPartner = async (req, res, next) => {
 
         next();
     } catch (error) {
-        console.error("isAdmin middleware error:", error.message);
+        console.error("isPartner middleware error:", error.message);
         return res.status(500).json({ success: false, message: error?.message ||"Internal server error" });
     }
 };

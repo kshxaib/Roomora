@@ -1,6 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import cookieParser from "cookie-parser";
+import cors from 'cors'
 import authRoutes from './routes/auth.routes.js';
 import hotelRoutes from './routes/hotel.routes.js';
 import bookingRoutes from './routes/booking.route.js';
@@ -10,6 +11,11 @@ import adminRoutes from './routes/admin.routes.js';
 
 dotenv.config();
 const app = express();
+
+app.use(cors({
+  origin: process.env.FRONTEND_URL,
+  credentials: true,
+}));
 
 app.use(express.json({ limit: "30mb" }));
 app.use(express.urlencoded({ extended: true }));

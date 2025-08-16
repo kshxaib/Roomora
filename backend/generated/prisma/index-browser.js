@@ -129,6 +129,23 @@ exports.Prisma.UserScalarFieldEnum = {
   avatarUrl: 'avatarUrl',
   totalEarnings: 'totalEarnings',
   walletBalance: 'walletBalance',
+  forgotPasswordOtp: 'forgotPasswordOtp',
+  forgotPasswordOtpExpiry: 'forgotPasswordOtpExpiry',
+  provider: 'provider',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.PaymentMethodScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  type: 'type',
+  upiId: 'upiId',
+  bankName: 'bankName',
+  accountNumber: 'accountNumber',
+  ifscCode: 'ifscCode',
+  accountHolderName: 'accountHolderName',
+  isDefault: 'isDefault',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -186,7 +203,7 @@ exports.Prisma.WithdrawalScalarFieldEnum = {
   userId: 'userId',
   amount: 'amount',
   status: 'status',
-  bankDetails: 'bankDetails',
+  paymentMethodId: 'paymentMethodId',
   remarks: 'remarks',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -212,11 +229,21 @@ exports.UserRole = exports.$Enums.UserRole = {
   USER: 'USER'
 };
 
+exports.PaymentMethodType = exports.$Enums.PaymentMethodType = {
+  UPI: 'UPI',
+  BANK_ACCOUNT: 'BANK_ACCOUNT'
+};
+
 exports.BookingStatus = exports.$Enums.BookingStatus = {
   BOOKED: 'BOOKED',
   CANCELLED: 'CANCELLED',
   COMPLETED: 'COMPLETED',
   PENDING: 'PENDING'
+};
+
+exports.EarningsType = exports.$Enums.EarningsType = {
+  PARTNER_EARNINGS: 'PARTNER_EARNINGS',
+  ADMIN_EARNINGS: 'ADMIN_EARNINGS'
 };
 
 exports.WithdrawalStatus = exports.$Enums.WithdrawalStatus = {
@@ -227,6 +254,7 @@ exports.WithdrawalStatus = exports.$Enums.WithdrawalStatus = {
 
 exports.Prisma.ModelName = {
   User: 'User',
+  PaymentMethod: 'PaymentMethod',
   Hotel: 'Hotel',
   Booking: 'Booking',
   Earnings: 'Earnings',

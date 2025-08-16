@@ -46,6 +46,9 @@ model User {
   avatarUrl String?  @default("https://static.vecteezy.com/system/resources/previews/002/318/271/original/user-profile-icon-free-vector.jpg")
   totalEarnings Float @default(0) 
   walletBalance Float @default(0) 
+  forgotPasswordOtp       String?
+  forgotPasswordOtpExpiry DateTime?
+  provider                String?
 
   paymentMethods PaymentMethod[]
   

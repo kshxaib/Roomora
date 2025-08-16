@@ -9,6 +9,7 @@ import partnerRoutes from './routes/partner.routes.js';
 import paymentRoutes from './routes/payment.routes.js';
 import adminRoutes from './routes/admin.routes.js';
 
+
 dotenv.config();
 const app = express();
 

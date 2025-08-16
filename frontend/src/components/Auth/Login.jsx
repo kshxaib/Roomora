@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import GoogleAuthButton from "./GoogleAuthButton";
 
 export default function Login() {
   return (
@@ -13,13 +14,13 @@ export default function Login() {
           Sign in to your account
         </h2>
         <p className="mt-2 text-center text-sm text-gray-500">
-          Don't have an account?{" "}
+          Don&apos;t have an account?{" "}
           <Link to="/signup" className="text-red-600 hover:underline font-semibold">
             Sign up
           </Link>
         </p>
 
-        {/* Form */}
+        {/* Form (manual login) */}
         <form className="mt-6 space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700">Email address</label>
@@ -66,14 +67,9 @@ export default function Login() {
 
         {/* Social Buttons */}
         <div className="flex gap-4">
-          <button className="flex-1 py-2 border border-gray-300 rounded-md flex items-center justify-center gap-2 hover:bg-gray-100">
-            <img
-              src="https://www.svgrepo.com/show/355037/google.svg"
-              alt="Google"
-              className="w-5 h-5"
-            />
-            Google
-          </button>
+          <div className="flex-1">
+            <GoogleAuthButton isRegister={false} />
+          </div>
           <button className="flex-1 py-2 border border-gray-300 rounded-md flex items-center justify-center gap-2 hover:bg-gray-100">
             <img
               src="https://www.svgrepo.com/show/349375/github.svg"

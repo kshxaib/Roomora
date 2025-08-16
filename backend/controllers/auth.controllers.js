@@ -5,6 +5,9 @@ import { generateCodeForEmail } from '../utils/generateCodeForEmail.js';
 import {sendEmail} from '../utils/mail.js'
 import { generatePassword } from '../utils/generatePassword.js';
 import { verifyGoogleToken } from '../utils/googleAuth.js';
+import { OAuth2Client } from "google-auth-library";
+
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 export const register = async (req, res) => {
     const { name, email, password, role } = req.body;
@@ -351,16 +354,6 @@ export const googleRegister = async (req, res) => {
       });
     }
 
-    // Generate username
-    const baseUsername = email.split('@')[0].toLowerCase().replace(/[^a-z0-9]/g, '');
-    let username = baseUsername;
-    let count = 1;
-    
-    while (await db.user.findUnique({ where: { username } })) {
-      username = `${baseUsername}${count}`;
-      count++;
-    }
-
     const randomPassword = generatePassword();
     const hashedPassword = await bcrypt.hash(randomPassword, 10);
     let role = 'USER';
@@ -372,9 +365,8 @@ export const googleRegister = async (req, res) => {
       data: {
         email,
         name,
-        username,
         password: hashedPassword,
-        image: picture,
+        avatarUrl: picture,
         role: role,
         provider: 'GOOGLE',
       },
@@ -400,8 +392,7 @@ export const googleRegister = async (req, res) => {
         id: newUser.id,
         email: newUser.email,
         name: newUser.name,
-        username: newUser.username,
-        image: newUser.image,
+        avatarUrl: newUser.avatarUrl,
       },
     });
 
@@ -479,7 +470,7 @@ export const googleLogin = async (req, res) => {
         email: user.email,
         name: user.name,
         role: user.role,
-        image: user?.image,
+        avatarUrl: user?.avatarUrl,
       },
     });
 

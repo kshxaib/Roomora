@@ -1,8 +1,31 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import GoogleAuthButton from "./GoogleAuthButton";
+import { useAuthStore } from "../../store/useAuthStore";
 
 export default function Login() {
+  const {login} = useAuthStore();
+  const navigate = useNavigate();
+
+  const [formData, setFormData] = useState({
+    email: "",
+    password: ""
+  });
+
+const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await login(formData);
+    } catch (error) {
+      console.error("Login failed:", error);
+    }
+  }
+  
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-100">
       <div className="w-full max-w-md p-8 bg-white rounded-2xl shadow-xl">
@@ -21,13 +44,16 @@ export default function Login() {
         </p>
 
         {/* Form (manual login) */}
-        <form className="mt-6 space-y-4">
+        <form className="mt-6 space-y-4" onSubmit={handleSubmit}>
           <div>
             <label className="block text-sm font-medium text-gray-700">Email address</label>
             <input
               type="email"
               className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-red-500"
               placeholder="Enter your email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
             />
           </div>
 
@@ -37,17 +63,16 @@ export default function Login() {
               type="password"
               className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-red-500"
               placeholder="Enter your password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
             />
           </div>
 
           <div className="flex items-center justify-between text-sm">
-            <label className="flex items-center">
-              <input type="checkbox" className="mr-2" />
-              Remember me
-            </label>
-            <a href="#" className="text-red-500 hover:underline">
+            <Link to={"/forgot-password"} className="text-red-500 hover:underline">
               Forgot password?
-            </a>
+            </Link>
           </div>
 
           <button
@@ -70,14 +95,7 @@ export default function Login() {
           <div className="flex-1">
             <GoogleAuthButton isRegister={false} />
           </div>
-          <button className="flex-1 py-2 border border-gray-300 rounded-md flex items-center justify-center gap-2 hover:bg-gray-100">
-            <img
-              src="https://www.svgrepo.com/show/349375/github.svg"
-              alt="GitHub"
-              className="w-5 h-5"
-            />
-            GitHub
-          </button>
+          
         </div>
       </div>
     </div>

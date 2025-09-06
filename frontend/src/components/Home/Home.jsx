@@ -1,13 +1,15 @@
 import React from "react";
-
+import { useAuthStore } from "../../store/useAuthStore";
 
 export default function Home() {
+  const {authUser} = useAuthStore();
+  
   return (
     <div className="bg-gray-50 text-gray-900">
       {/* ✅ Hero Section */}
       <section className="relative h-[70vh] flex items-center justify-center overflow-hidden">
         <img
-          src="/search_bg.jpg"
+          src="/bg.jpg"
           alt="Hotel Background"
           className="absolute inset-0 w-full h-full object-cover"
         />

@@ -9,7 +9,7 @@ export const addPaymentMethod = async (req, res) => {
         const userId = req.user.id;
         const { type, upiId, bankName, accountNumber, ifscCode, accountHolderName } = req.body;
 
-        // Validate input based on type
+
         if (type === "UPI" && !upiId) {
             return res.status(400).json({
                 success: false,

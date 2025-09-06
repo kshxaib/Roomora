@@ -14,7 +14,7 @@ export const sendEmail = async(name="", email="", code="", subject="", password 
   else if (subject === 'Welcome to Roomora - Your Account Details') {
     html = getGoogleWelcomeEmailHtml(name, password);
   }
-  else {
+  else if (subject === 'Welcome to Roomora - Your account created successfully') {
     html = getWelcomeEmailHtml(name);
   }
 

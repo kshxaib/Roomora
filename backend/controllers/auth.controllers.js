@@ -2,7 +2,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { db } from "../utils/db.js"
 import { generateCodeForEmail } from '../utils/generateCodeForEmail.js';
-import {sendEmail} from '../utils/mail.js'
+import { sendEmail } from '../utils/mail.js'
 import { generatePassword } from '../utils/generatePassword.js';
 import { verifyGoogleToken } from '../utils/googleAuth.js';
 import { OAuth2Client } from "google-auth-library";
@@ -10,190 +10,193 @@ import { OAuth2Client } from "google-auth-library";
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 export const register = async (req, res) => {
-    const { name, email, password, role } = req.body;
+  const { name, email, password, role } = req.body;
 
-    if ([email, password, name, role].some((filed) => filed?.trim() === "")) {
-        return res.status(400).json({
-            success: false,
-            message: "All fields are required"
-        });
+  if ([email, password, name, role].some((filed) => filed?.trim() === "")) {
+    return res.status(400).json({
+      success: false,
+      message: "All fields are required"
+    });
+  }
+
+  try {
+    const existingUser = await db.user.findUnique({
+      where: { email }
+    })
+
+    if (existingUser) {
+      return res.status(409).json({
+        success: false,
+        message: "Email already in use"
+      });
     }
 
-    try {
-        const existingUser = await db.user.findUnique({
-            where: { email }
-        })
+    const hashedPassword = await bcrypt.hash(password, 10)
 
-        if (existingUser) {
-            return res.status(409).json({
-                success: false,
-                message: "Email already in use"
-            });
-        }
-
-        const hashedPassword = await bcrypt.hash(password, 10)
-
-        let finalRole = role
-if (email === process.env.ADMIN_EMAIL) {
-  finalRole = "ADMIN"
-}
-
-        const newUser = await db.user.create({
-            data: {
-                name,
-                email,
-                password: hashedPassword,
-                role: finalRole || "USER"
-            }
-        })
-
-        const token = jwt.sign({ id: newUser.id }, process.env.JWT_SECRET, {
-            expiresIn: "7d",
-        });
-
-        res.cookie("token", token, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV !== "development",
-            sameSite: "strict",
-            maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-        });
-
-        res.status(201).json({
-            success: true,
-            message: "User registered successfully",
-            user: {
-                id: newUser.id,
-                name: newUser.name,
-                email: newUser.email,
-                role: newUser.role
-            }
-        })
-
-    } catch (error) {
-        console.error("Error creating user:", error);
-        res.status(500).json({
-            success: false,
-            message: error?.message || "Internal server error"
-        });
+    let finalRole = role
+    if (email === process.env.ADMIN_EMAIL) {
+      finalRole = "ADMIN"
     }
+
+    const newUser = await db.user.create({
+      data: {
+        name,
+        email,
+        password: hashedPassword,
+        role: finalRole || "USER"
+      }
+    })
+
+    const token = jwt.sign({ id: newUser.id }, process.env.JWT_SECRET, {
+      expiresIn: "7d",
+    });
+
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV !== "development",
+      sameSite: "strict",
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    });
+
+    const emailSubject = "Welcome to Roomora - Your account created successfully";
+    await sendEmail(newUser.name, newUser.email, "", emailSubject, "");
+
+    res.status(201).json({
+      success: true,
+      message: "User registered successfully",
+      user: {
+        id: newUser.id,
+        name: newUser.name,
+        email: newUser.email,
+        role: newUser.role
+      }
+    })
+
+  } catch (error) {
+    console.error("Error creating user:", error);
+    res.status(500).json({
+      success: false,
+      message: error?.message || "Internal server error"
+    });
+  }
 }
 
 export const login = async (req, res) => {
-    const { email, password } = req.body
-    if ([email, password].some((field) => field?.trim() === "")) {
-        return res.status(400).json({
-            success: false,
-            message: "All fields are required"
-        });
+  const { email, password } = req.body
+  if ([email, password].some((field) => field?.trim() === "")) {
+    return res.status(400).json({
+      success: false,
+      message: "All fields are required"
+    });
+  }
+
+  try {
+    const user = await db.user.findUnique({
+      where: { email }
+    })
+
+    if (!user || user.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found"
+      });
     }
 
-    try {
-        const user = await db.user.findUnique({
-            where: { email }
-        })
+    const isPasswordValid = await bcrypt.compare(password, user.password)
 
-        if (!user || user.length === 0) {
-            return res.status(404).json({
-                success: false,
-                message: "User not found"
-            });
-        }
-
-        const isPasswordValid = await bcrypt.compare(password, user.password)
-
-        if (!isPasswordValid) {
-            return res.status(401).json({
-                success: false,
-                message: "Invalid credentials"
-            });
-        }
-
-        const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
-            expiresIn: "7d",
-        });
-
-        res.cookie("token", token, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV !== "development",
-            sameSite: "strict",
-            maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-        });
-
-        res.status(200).json({
-            success: true,
-            message: "User logged in successfully",
-            user: {
-                id: user.id,
-                name: user.name,
-                email: user.email,
-                role: user.role,
-                avatarUrl: user.avatarUrl
-            }
-        });
-    } catch (error) {
-        console.error("Error logging in user:", error);
-        res.status(500).json({
-            success: false,
-            message: error?.message || "Internal server error"
-        });
+    if (!isPasswordValid) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid credentials"
+      });
     }
+
+    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+      expiresIn: "7d",
+    });
+
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV !== "development",
+      sameSite: "strict",
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "User logged in successfully",
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        avatarUrl: user.avatarUrl
+      }
+    });
+  } catch (error) {
+    console.error("Error logging in user:", error);
+    res.status(500).json({
+      success: false,
+      message: error?.message || "Internal server error"
+    });
+  }
 }
 
 export const logout = async (req, res) => {
-    try {
-        res.clearCookie("token", {
-            httpOnly: true,
-            secure: process.env.NODE_ENV !== "development",
-            sameSite: "strict",
-        });
+  try {
+    res.clearCookie("token", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV !== "development",
+      sameSite: "strict",
+    });
 
-        res.status(200).json({
-            success: true,
-            message: "User logged out successfully",
-        });
-    } catch (error) {
-        res.status(500).json({ success: false, message: "Internal server error" });
-    }
+    res.status(200).json({
+      success: true,
+      message: "User logged out successfully",
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
 };
 
 export const getCurrentUser = async (req, res) => {
-    try {
-        const user = await db.user.findUnique({
-            where: {id: req.user.id},
-            select: {
-                id: true,
-                name: true,
-                email: true,
-                role: true,
-                avatarUrl: true
-            }
-        })
+  try {
+    const user = await db.user.findUnique({
+      where: { id: req.user.id },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        role: true,
+        avatarUrl: true
+      }
+    })
 
-        if (!user) {
-            return res.status(404).json({
-                success: false,
-                message: "User not found"
-            });
-        }
-
-        res.status(200).json({
-            success: true,
-            user
-        });
-    } catch (error) {
-        console.error("Error fetching current user:", error);
-        res.status(500).json({
-            success: false,
-            message: error?.message || "Internal server error"
-        });
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found"
+      });
     }
+
+    res.status(200).json({
+      success: true,
+      user
+    });
+  } catch (error) {
+    console.error("Error fetching current user:", error);
+    res.status(500).json({
+      success: false,
+      message: error?.message || "Internal server error"
+    });
+  }
 }
 
 export const SendOtpForgotPassword = async (req, res) => {
   const { email } = req.body;
 
   if (!email) {
-    return res.status(400).json({success:false, message: "Email is required" });
+    return res.status(400).json({ success: false, message: "Email is required" });
   }
 
   try {
@@ -204,7 +207,7 @@ export const SendOtpForgotPassword = async (req, res) => {
     });
 
     if (!user) {
-      return res.status(404).json({ success:false, message: "User not found" });
+      return res.status(404).json({ success: false, message: "User not found" });
     }
 
     const code = generateCodeForEmail();
@@ -225,17 +228,16 @@ export const SendOtpForgotPassword = async (req, res) => {
     });
   } catch (error) {
     console.error("Error sending email:", error);
-    return res.status(500).json({success: false, message: error?.message || "Internal server error" });
+    return res.status(500).json({ success: false, message: error?.message || "Internal server error" });
   }
 };
 
 export const verifyOtp = async (req, res) => {
-  const { email } = req.params;
-  const { code } = req.body;
+  const { email, code } = req.body;
 
   if (!email || !code) {
     return res.status(400).json({
-        success: false,
+      success: false,
       message: "Email and code are required",
     });
   }
@@ -274,7 +276,7 @@ export const verifyOtp = async (req, res) => {
     });
   } catch (error) {
     console.error("Error verifying OTP:", error);
-    return res.status(500).json({success: false, message: "Error verifying OTP" });
+    return res.status(500).json({ success: false, message: "Error verifying OTP" });
   }
 };
 
@@ -283,7 +285,7 @@ export const changePassword = async (req, res) => {
 
   if (!email || !newPassword || !confirmPassword) {
     return res.status(400).json({
-        success: false,
+      success: false,
       message: "All fields are required",
     });
   }
@@ -329,7 +331,7 @@ export const changePassword = async (req, res) => {
   } catch (error) {
     console.error("Error changing password:", error);
     return res.status(500).json({
-      success: false, 
+      success: false,
       message: "Error changing password",
     });
   }
@@ -338,7 +340,7 @@ export const changePassword = async (req, res) => {
 export const googleRegister = async (req, res) => {
   try {
     const { token } = req.body;
-    
+
     if (!token) {
       return res.status(400).json({ success: false, message: 'Token is required' });
     }
@@ -357,7 +359,7 @@ export const googleRegister = async (req, res) => {
     const randomPassword = generatePassword();
     const hashedPassword = await bcrypt.hash(randomPassword, 10);
     let role = 'USER';
-    if(email === process.env.ADMIN_EMAIL) {
+    if (email === process.env.ADMIN_EMAIL) {
       role = 'ADMIN';
     }
 
@@ -380,11 +382,11 @@ export const googleRegister = async (req, res) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
-      maxAge: 604800000, 
+      maxAge: 604800000,
     });
 
-    const emailSubject = "Welcome to CodeSaga - Your Account Details";
-   await sendEmail(name, email, null, emailSubject, randomPassword);
+    const emailSubject = "Welcome to Roomora - Your Account Details";
+    await sendEmail(name, email, null, emailSubject, randomPassword);
 
     return res.status(201).json({
       success: true,
@@ -409,9 +411,9 @@ export const googleLogin = async (req, res) => {
   const { token } = req.body;
 
   if (!token) {
-    return res.status(400).json({ 
+    return res.status(400).json({
       success: false,
-      message: "Google token is required" 
+      message: "Google token is required"
     });
   }
 
@@ -425,9 +427,9 @@ export const googleLogin = async (req, res) => {
     const googleEmail = payload.email;
 
     if (!googleEmail) {
-      return res.status(400).json({ 
+      return res.status(400).json({
         success: false,
-        message: "Email not found in Google token" 
+        message: "Email not found in Google token"
       });
     }
 
@@ -436,9 +438,9 @@ export const googleLogin = async (req, res) => {
     });
 
     if (!user) {
-      return res.status(404).json({ 
+      return res.status(404).json({
         success: false,
-        message: "No account found with this Google email. Please register first." 
+        message: "No account found with this Google email. Please register first."
       });
     }
 
@@ -476,9 +478,9 @@ export const googleLogin = async (req, res) => {
 
   } catch (error) {
     console.error("Google login error:", error);
-    return res.status(401).json({ 
+    return res.status(401).json({
       success: false,
-      message: "Invalid Google token" 
+      message: "Invalid Google token"
     });
   }
 };

@@ -1,8 +1,4 @@
 import { db } from "../utils/db.js"
-import { razorpayInstance } from "../utils/razorpay.js"
-import crypto from "crypto";
-
-const PLATFORM_FEE_PERCENTAGE = 10;
 
 export const getPartnerDashboard = async (req, res) => {
     try {
@@ -83,6 +79,7 @@ export const getPartnerDashboard = async (req, res) => {
                     id: hotel.id,
                     name: hotel.name,
                     city: hotel.city,
+                    images: hotel.images,
                     totalBookings: hotel._count.bookings,
                     activeBookings: hotel.bookings.length,
                     availableRooms: hotel.availableRooms

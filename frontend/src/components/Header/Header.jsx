@@ -117,6 +117,16 @@ export default function Header() {
                           My Bookings
                         </Link>
                       )}
+                     {
+                      authUser.role === "PARTNER" && (
+                        <Link
+                          to="/partner-dashboard"
+                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-red-50 hover:text-red-600 transition"
+                        >
+                          Partner Dashboard
+                        </Link>
+                      )
+                     }                      
                       <Link
                         to="/help"
                         className="block px-4 py-2 text-sm text-gray-700 hover:bg-red-50 hover:text-red-600 transition"

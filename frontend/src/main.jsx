@@ -17,6 +17,7 @@ import Signup from "./components/Auth/Signup.jsx";
 import { useAuthStore } from "./store/useAuthStore.js";
 import { Toaster } from "sonner";
 import ForgotPasswordPage from "./components/Auth/ForgotPasswordPage.jsx";
+import PartnerDashboard from "./components/Partner/PartnerDashboard.jsx";
 
 function App() {
   const { getCurrentUser, authUser } = useAuthStore();
@@ -44,6 +45,10 @@ function App() {
         <Route
           path="signup"
           element={authUser ? <Navigate to="/" /> : <Signup />}
+        />
+        <Route
+          path="partner-dashboard"
+          element={authUser ? <PartnerDashboard /> : <Navigate to="/login" />}
         />
       </Route>
       

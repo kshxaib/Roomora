@@ -25,9 +25,9 @@ const upload = multer({
     storage: storage,
     fileFilter: fileFilter,
     limits: {
-        fileSize: 5 * 1024 * 1024, // 5MB limit per file
+        fileSize: 10 * 1024 * 1024, // 10MB limit per file
         files: 10 // Maximum 10 files
     }
 });
 
-export const uploadHotelImages = upload.array('images', 10); // 'images' is the field name
+export const uploadHotelImages = upload.array('images', 10); 

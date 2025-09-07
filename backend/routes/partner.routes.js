@@ -5,7 +5,7 @@ import { getPartnerDashboard, getPartnerHotelBookings, getPartnerWithdrawals, re
 const partnerRoutes = express.Router();
 
 partnerRoutes.get("/dashboard", authMiddleware, isPartner, getPartnerDashboard);
-partnerRoutes.get("/hotels/:hotelId/bookings", authMiddleware, isPartner, getPartnerHotelBookings);
+partnerRoutes.get("/hotels/:hotelId/bookings", authMiddleware, isPartner, getPartnerHotelBookings);  // Get bookings for a specific hotel
 
 // Partner withdrawal routes
 partnerRoutes.get("/withdrawals", authMiddleware, isPartner, getPartnerWithdrawals);

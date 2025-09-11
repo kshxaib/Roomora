@@ -18,6 +18,8 @@ import { useAuthStore } from "./store/useAuthStore.js";
 import { Toaster } from "sonner";
 import ForgotPasswordPage from "./components/Auth/ForgotPasswordPage.jsx";
 import PartnerDashboard from "./components/Partner/PartnerDashboard.jsx";
+import HotelDetails from "./components/HotelBooking/HotelDetails.jsx";
+import MyBookingPage from "./components/HotelBooking/MyBookingPage.jsx";
 
 function App() {
   const { getCurrentUser, authUser } = useAuthStore();
@@ -49,6 +51,14 @@ function App() {
         <Route
           path="partner-dashboard"
           element={authUser ? <PartnerDashboard /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="hotel/:id"
+          element={authUser ? <HotelDetails /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="my-bookings"
+          element={authUser ? <MyBookingPage /> : <Navigate to="/login" />}
         />
       </Route>
       

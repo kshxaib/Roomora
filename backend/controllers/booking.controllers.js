@@ -1,14 +1,18 @@
 import { db } from "../utils/db.js"
 import { razorpayInstance } from "../utils/razorpay.js"
 import crypto from "crypto";
+import { sendEmail } from '../utils/mail.js'
 
 const PLATFORM_FEE_PERCENTAGE = 10;
 
 // ye controllers user ke liye hai
 export const createBooking = async (req, res) => {
-    const { hotelId, checkIn, checkOut, guests } = req.body
+    const { hotelId, checkIn, checkOut, guests, name } = req.body
+    console.log("Booking Request Body:", req.body);
     try {
         const userId = req.user.id
+
+        const user = await db.user.findUnique({ where: { id: userId } })
 
         const hotel = await db.hotel.findUnique({
             where: { id: hotelId },
@@ -57,6 +61,29 @@ export const createBooking = async (req, res) => {
             }
         })
 
+        console.log("📧 Booking Email Data:", {
+            email: user.email,
+            name,
+            hotelName: hotel.name,
+            checkIn,
+            checkOut,
+            guests,
+            totalAmount
+        });
+
+        const emailSubject = "Booking Created";
+
+        await sendEmail({
+            subject: emailSubject,
+            email: user.email,
+            name,
+            hotelName: hotel.name,
+            checkIn,
+            checkOut,
+            guests,
+            totalAmount
+        });
+
         return res.status(201).json({
             success: true,
             message: "Booking created. Complete payment to confirm.",
@@ -73,11 +100,11 @@ export const createBooking = async (req, res) => {
         })
 
     }
-} 
+}
 
 export const verifyBookingPayment = async (req, res) => {
     const { razorpay_payment_id, razorpay_order_id, razorpay_signature, bookingId } = req.body;
-    
+
     try {
         const userId = req.user.id;
         const body = `${razorpay_order_id}|${razorpay_payment_id}`;
@@ -93,7 +120,7 @@ export const verifyBookingPayment = async (req, res) => {
             });
         }
 
-        
+
         const result = await db.$transaction(async (prisma) => {
             const booking = await prisma.booking.update({
                 where: { id: bookingId },
@@ -120,7 +147,7 @@ export const verifyBookingPayment = async (req, res) => {
                 }
             });
 
-          
+
             if (booking.partnerAmount && booking.adminAmount) {
                 await prisma.earnings.create({
                     data: {
@@ -173,7 +200,7 @@ export const verifyBookingPayment = async (req, res) => {
             message: "Payment verified and booking confirmed",
             booking: result
         });
-        
+
     } catch (error) {
         console.error("Error verifying payment:", error);
         return res.status(500).json({
@@ -222,8 +249,9 @@ export const cancelBooking = async (req, res) => {
             });
         }
 
-        // Start transaction for cancellation
+        // Transaction: cancel booking + deduct balances
         await db.$transaction(async (prisma) => {
+            // Cancel booking and release room
             await prisma.booking.update({
                 where: { id },
                 data: {
@@ -238,25 +266,23 @@ export const cancelBooking = async (req, res) => {
                 }
             });
 
-            // If booking was paid, reverse the earnings
+            // Reverse earnings if payment was done
             if (booking.isPaid && booking.partnerAmount && booking.adminAmount) {
-                // Reverse partner earnings
-                if (isPartner || isAdmin) {
-                    await prisma.user.update({
-                        where: { id: booking.hotel.ownerId },
-                        data: {
-                            totalEarnings: { decrement: booking.partnerAmount },
-                            walletBalance: { decrement: booking.partnerAmount }
-                        }
-                    });
-                }
+                // Deduct from Partner (hotel owner)
+                await prisma.user.update({
+                    where: { id: booking.hotel.ownerId },
+                    data: {
+                        totalEarnings: { decrement: booking.partnerAmount },
+                        walletBalance: { decrement: booking.partnerAmount }
+                    }
+                });
 
-                // Reverse admin earnings 
+                // Deduct from Admin
                 const adminUser = await prisma.user.findFirst({
                     where: { role: "ADMIN" }
                 });
 
-                if (adminUser && (isAdmin || isPartner)) {
+                if (adminUser) {
                     await prisma.user.update({
                         where: { id: adminUser.id },
                         data: {
@@ -266,7 +292,7 @@ export const cancelBooking = async (req, res) => {
                     });
                 }
 
-                // Mark earnings as reversed
+                // Reset earnings record
                 await prisma.earnings.updateMany({
                     where: { bookingId: booking.id },
                     data: {
@@ -279,7 +305,7 @@ export const cancelBooking = async (req, res) => {
 
         return res.status(200).json({
             success: true,
-            message: "Booking cancelled successfully"
+            message: "Booking cancelled successfully. Partner and Admin balances adjusted."
         });
     } catch (error) {
         console.error("Error cancelling booking:", error);
@@ -290,9 +316,10 @@ export const cancelBooking = async (req, res) => {
     }
 };
 
-export const getUserBookingHistory = async (req, res) => {
+export const getUserBooking = async (req, res) => {
     try {
         const userId = req.user.id;
+        const now = new Date();
 
         const bookings = await db.booking.findMany({
             where: { userId },
@@ -304,55 +331,43 @@ export const getUserBookingHistory = async (req, res) => {
                         city: true,
                         address: true,
                         images: true,
-                        price: true
-                    }
-                }
+                        price: true,
+                    },
+                },
             },
-            orderBy: {
-                checkIn: 'asc'
-            }
+            orderBy: { checkIn: "asc" },
         });
 
-        // Filter upcoming and past bookings
-        const now = new Date();
-        const upcomingBookings = bookings.filter(booking => 
-            new Date(booking.checkIn) > now && booking.status === "BOOKED"
-        );
-        const pastBookings = bookings.filter(booking => 
-            new Date(booking.checkIn) <= now || 
-            booking.status === "COMPLETED" || 
-            booking.status === "CANCELLED"
-        );
+        const upcoming = [];
+        const active = [];
+        const completed = [];
+        const cancelled = [];
+
+        bookings.forEach((b) => {
+            const checkIn = new Date(b.checkIn);
+            const checkOut = new Date(b.checkOut);
+
+            if (b.status === "CANCELLED") {
+                cancelled.push(b);
+            } else if (now >= checkIn && now <= checkOut && b.status === "BOOKED") {
+                active.push(b);
+            } else if (now < checkIn && b.status === "BOOKED") {
+                upcoming.push(b);
+            } else if (now > checkOut || b.status === "COMPLETED") {
+                completed.push(b);
+            }
+        });
 
         return res.status(200).json({
             success: true,
-            message: "Booking history fetched successfully",
-            data: {
-                upcomingBookings: upcomingBookings.map(booking => ({
-                    id: booking.id,
-                    hotel: booking.hotel,
-                    checkIn: booking.checkIn,
-                    checkOut: booking.checkOut,
-                    guests: booking.guests,
-                    totalAmount: booking.totalAmount,
-                    status: booking.status
-                })),
-                pastBookings: pastBookings.map(booking => ({
-                    id: booking.id,
-                    hotel: booking.hotel,
-                    checkIn: booking.checkIn,
-                    checkOut: booking.checkOut,
-                    guests: booking.guests,
-                    totalAmount: booking.totalAmount,
-                    status: booking.status
-                }))
-            }
+            message: "Bookings fetched successfully",
+            data: { upcoming, active, completed, cancelled },
         });
     } catch (error) {
-        console.error("Error fetching booking history:", error);
+        console.error("Error fetching bookings:", error);
         return res.status(500).json({
             success: false,
-            message: error?.message || "Internal server error"
+            message: error?.message || "Internal server error",
         });
     }
 };

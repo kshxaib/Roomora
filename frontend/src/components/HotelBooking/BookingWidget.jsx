@@ -12,12 +12,29 @@ const BookingWidget = ({
   calculateNights,
   calculateTotal,
   handleBookNow,
-  isCreatingBooking
+  isCreatingBooking,
+   bookingName,
+  setBookingName 
 }) => {
   return (
     <div className="bg-white rounded-2xl shadow-sm p-6 sticky top-6 border border-gray-100">
-      <h3 className="text-xl font-semibold text-gray-800 mb-4">Book Your Stay</h3>
-      
+      <h3 className="text-xl font-semibold text-gray-800 mb-4">
+        Book Your Stay
+      </h3>
+
+      <div className="mb-4">
+        <label className="block text-gray-700 text-sm font-medium mb-1">
+          Booking Name
+        </label>
+        <input
+  type="text"
+  value={bookingName}
+  onChange={(e) => setBookingName(e.target.value)}
+  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+  placeholder="Enter booking name"
+/>
+      </div>
+
       {/* Date Selection */}
       <div className="space-y-4 mb-4">
         <div>
@@ -31,7 +48,7 @@ const BookingWidget = ({
               value={checkInDate}
               onChange={(e) => setCheckInDate(e.target.value)}
               className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-colors"
-              min={new Date().toISOString().split('T')[0]}
+              min={new Date().toISOString().split("T")[0]}
             />
           </div>
         </div>
@@ -65,7 +82,7 @@ const BookingWidget = ({
             >
               {[1, 2, 3, 4, 5, 6].map((num) => (
                 <option key={num} value={num}>
-                  {num} {num === 1 ? 'Guest' : 'Guests'}
+                  {num} {num === 1 ? "Guest" : "Guests"}
                 </option>
               ))}
             </select>
@@ -79,7 +96,9 @@ const BookingWidget = ({
           <div className="space-y-3">
             <div className="flex justify-between items-center">
               <span className="text-gray-600">Room price</span>
-              <span className="font-semibold">₹{selectedHotel.price?.toLocaleString()}/night</span>
+              <span className="font-semibold">
+                ₹{selectedHotel.price?.toLocaleString()}/night
+              </span>
             </div>
             <div className="flex justify-between items-center">
               <span className="text-gray-600">Nights</span>
@@ -117,8 +136,16 @@ const BookingWidget = ({
       {/* Security Badge */}
       <div className="mt-4 text-center">
         <p className="text-xs text-gray-500 flex items-center justify-center">
-          <svg className="w-3 h-3 mr-1 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+          <svg
+            className="w-3 h-3 mr-1 text-green-500"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fillRule="evenodd"
+              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+              clipRule="evenodd"
+            />
           </svg>
           Secure payment • Free cancellation
         </p>

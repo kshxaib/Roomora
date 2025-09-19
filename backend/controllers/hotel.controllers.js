@@ -304,3 +304,60 @@ export const getHotelsByRating = async (req, res) => {
         });
     }
 };
+
+export const getHotelByCity = async (req, res) => {
+    try {
+        const city = req.params.city;
+        const hotels = await db.hotel.findMany({
+            where: { city: { equals: city, mode: 'insensitive' } }
+        });
+        if (!hotels || hotels.length === 0) {
+            return res.status(200).json({
+                success: false,
+                hotels: [],
+                message: "No hotels found in this city"
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            hotels
+        });
+
+    } catch (error) {
+        console.error("Error fetching hotels by city:", error.message);
+        return res.status(500).json({
+            success: false,
+            message: error?.message || "Internal server error"
+        });
+    }
+}
+
+export const getFeaturedHotels = async (req, res) => {
+  try {
+    const hotels = await db.hotel.findMany({
+      orderBy: { createdAt: "desc" },
+      take: 8, 
+    });
+
+    if (!hotels || hotels.length === 0) {
+      return res.status(200).json({
+        success: false,
+        hotels: [],
+        message: "No featured hotels found",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Featured hotels fetched successfully",
+      hotels,
+    });
+  } catch (error) {
+    console.error("Error fetching featured hotels:", error.message);
+    return res.status(500).json({
+      success: false,
+      message: error?.message || "Internal server error",
+    });
+  }
+};

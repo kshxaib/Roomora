@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useBookingStore } from "../../store/useBookingStore";
-import { useAuthStore } from "../../store/useAuthStore";
-import { Calendar, MapPin, Users, CreditCard, X, AlertCircle, CheckCircle, Clock, Download } from "lucide-react";
+import {
+  Calendar,
+  MapPin,
+  Users,
+  CreditCard,
+} from "lucide-react";
 import { toast } from "sonner";
 import CancelBookingModal from "./CancelBookingModal";
 
 const MyBookingPage = () => {
   const { bookings, getUserBookings, cancelBooking, isLoading } = useBookingStore();
-  const { authUser } = useAuthStore();
   const [selectedBooking, setSelectedBooking] = useState(null);
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [activeTab, setActiveTab] = useState("upcoming");
@@ -23,12 +26,13 @@ const MyBookingPage = () => {
 
   const confirmCancelBooking = async () => {
     try {
-      await cancelBooking(selectedBooking.id);
+      await cancelBooking(selectedBooking.id); 
+      // Backend should handle: deduct partner + admin balances here
       setShowCancelModal(false);
       setSelectedBooking(null);
-      toast.success("Booking cancelled successfully");
+      toast.success("Booking cancelled successfully. Refund processed.");
     } catch (error) {
-      toast.error("Failed to cancel booking");
+      toast.error("Failed to cancel booking. Please try again.");
     }
   };
 
@@ -36,8 +40,7 @@ const MyBookingPage = () => {
     const checkInDate = new Date(booking.checkIn);
     const now = new Date();
     const hoursUntilCheckIn = (checkInDate - now) / (1000 * 60 * 60);
-    
-    // Allow cancellation up to 24 hours before check-in
+
     return hoursUntilCheckIn > 24 && booking.status === "BOOKED";
   };
 
@@ -49,19 +52,19 @@ const MyBookingPage = () => {
     if (booking.status === "CANCELLED") {
       return { status: "Cancelled", color: "text-red-600", bg: "bg-red-100" };
     }
-    
+
     if (now > checkOut) {
       return { status: "Completed", color: "text-green-600", bg: "bg-green-100" };
     }
-    
+
     if (now >= checkIn && now <= checkOut) {
       return { status: "Active", color: "text-blue-600", bg: "bg-blue-100" };
     }
-    
+
     return { status: "Upcoming", color: "text-amber-600", bg: "bg-amber-100" };
   };
 
-  const filteredBookings = bookings.filter(booking => {
+  const filteredBookings = bookings.filter((booking) => {
     const status = getBookingStatus(booking);
     if (activeTab === "upcoming") return status.status === "Upcoming";
     if (activeTab === "active") return status.status === "Active";
@@ -70,13 +73,12 @@ const MyBookingPage = () => {
     return true;
   });
 
-
   const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString('en-IN', {
-      weekday: 'short',
-      day: 'numeric',
-      month: 'short',
-      year: 'numeric'
+    return new Date(dateString).toLocaleDateString("en-IN", {
+      weekday: "short",
+      day: "numeric",
+      month: "short",
+      year: "numeric",
     });
   };
 
@@ -95,10 +97,6 @@ const MyBookingPage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <h1 className="text-2xl font-bold text-gray-800">My Bookings</h1>
-            <div className="flex items-center space-x-2 text-sm text-gray-600">
-              <Users className="h-4 w-4" />
-              <span>{authUser?.name}</span>
-            </div>
           </div>
         </div>
       </div>
@@ -108,10 +106,26 @@ const MyBookingPage = () => {
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 mb-6">
           <div className="flex overflow-x-auto">
             {[
-              { id: "upcoming", label: "Upcoming", count: bookings.filter(b => getBookingStatus(b).status === "Upcoming").length },
-              { id: "active", label: "Active", count: bookings.filter(b => getBookingStatus(b).status === "Active").length },
-              { id: "completed", label: "Completed", count: bookings.filter(b => getBookingStatus(b).status === "Completed").length },
-              { id: "cancelled", label: "Cancelled", count: bookings.filter(b => getBookingStatus(b).status === "Cancelled").length }
+              {
+                id: "upcoming",
+                label: "Upcoming",
+                count: bookings.filter((b) => getBookingStatus(b).status === "Upcoming").length,
+              },
+              {
+                id: "active",
+                label: "Active",
+                count: bookings.filter((b) => getBookingStatus(b).status === "Active").length,
+              },
+              {
+                id: "completed",
+                label: "Completed",
+                count: bookings.filter((b) => getBookingStatus(b).status === "Completed").length,
+              },
+              {
+                id: "cancelled",
+                label: "Cancelled",
+                count: bookings.filter((b) => getBookingStatus(b).status === "Cancelled").length,
+              },
             ].map((tab) => (
               <button
                 key={tab.id}
@@ -138,8 +152,12 @@ const MyBookingPage = () => {
           {filteredBookings.length === 0 ? (
             <div className="text-center py-12 bg-white rounded-lg shadow-sm border border-gray-200">
               <Calendar className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 mb-2">No {activeTab} bookings</h3>
-              <p className="text-gray-500">You don't have any {activeTab} bookings yet.</p>
+              <h3 className="text-lg font-medium text-gray-900 mb-2">
+                No {activeTab} bookings
+              </h3>
+              <p className="text-gray-500">
+                You don't have any {activeTab} bookings yet.
+              </p>
             </div>
           ) : (
             filteredBookings.map((booking) => {
@@ -147,12 +165,17 @@ const MyBookingPage = () => {
               const cancellable = canCancelBooking(booking);
 
               return (
-                <div key={booking.id} className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                <div
+                  key={booking.id}
+                  className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden"
+                >
                   {/* Booking Header */}
                   <div className="border-b border-gray-200 p-4 bg-gray-50">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-3">
-                        <div className={`px-2 py-1 rounded-full text-xs font-medium ${status.bg} ${status.color}`}>
+                        <div
+                          className={`px-2 py-1 rounded-full text-xs font-medium ${status.bg} ${status.color}`}
+                        >
                           {status.status}
                         </div>
                         <span className="text-sm text-gray-600">
@@ -192,11 +215,15 @@ const MyBookingPage = () => {
                         <div className="grid grid-cols-2 gap-4">
                           <div>
                             <p className="text-sm text-gray-600 mb-1">Check-in</p>
-                            <p className="font-semibold text-sm">{formatDate(booking.checkIn)}</p>
+                            <p className="font-semibold text-sm">
+                              {formatDate(booking.checkIn)}
+                            </p>
                           </div>
                           <div>
                             <p className="text-sm text-gray-600 mb-1">Check-out</p>
-                            <p className="font-semibold text-sm">{formatDate(booking.checkOut)}</p>
+                            <p className="font-semibold text-sm">
+                              {formatDate(booking.checkOut)}
+                            </p>
                           </div>
                         </div>
 

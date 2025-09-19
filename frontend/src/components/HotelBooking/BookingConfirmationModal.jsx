@@ -10,14 +10,17 @@ const BookingConfirmationModal = ({
   nights,
   onClose,
   onConfirm,
-  isLoading
+  isLoading,
+  bookingName={bookingName}
 }) => {
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md">
         <div className="p-6">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-xl font-semibold text-gray-800">Confirm Booking</h3>
+            <h3 className="text-xl font-semibold text-gray-800">
+              Confirm Booking
+            </h3>
             <button
               onClick={onClose}
               className="text-gray-400 hover:text-gray-600 transition-colors p-1 rounded-full hover:bg-gray-100"
@@ -29,6 +32,10 @@ const BookingConfirmationModal = ({
 
           {/* Hotel Info */}
           <div className="mb-6">
+            <div className="bg-gray-50 p-3 rounded-lg">
+              <p className="text-sm text-gray-600 mb-1">Booking Name</p>
+              <p className="font-semibold text-sm">{bookingName}</p>
+            </div>
             <div className="flex items-center space-x-3 mb-3 p-3 bg-gray-50 rounded-lg">
               <img
                 src={hotel.images?.[0] || "/default-hotel.jpg"}
@@ -50,14 +57,18 @@ const BookingConfirmationModal = ({
                   <Calendar className="h-3 w-3 mr-1" />
                   Check-in
                 </p>
-                <p className="font-semibold text-sm">{new Date(checkInDate).toLocaleDateString()}</p>
+                <p className="font-semibold text-sm">
+                  {new Date(checkInDate).toLocaleDateString()}
+                </p>
               </div>
               <div className="bg-gray-50 p-3 rounded-lg">
                 <p className="text-sm text-gray-600 mb-1 flex items-center">
                   <Calendar className="h-3 w-3 mr-1" />
                   Check-out
                 </p>
-                <p className="font-semibold text-sm">{new Date(checkOutDate).toLocaleDateString()}</p>
+                <p className="font-semibold text-sm">
+                  {new Date(checkOutDate).toLocaleDateString()}
+                </p>
               </div>
             </div>
 
@@ -81,7 +92,9 @@ const BookingConfirmationModal = ({
             <div className="space-y-3">
               <div className="flex justify-between items-center">
                 <span className="text-gray-600">Room price</span>
-                <span className="font-semibold">₹{hotel.price?.toLocaleString()}/night</span>
+                <span className="font-semibold">
+                  ₹{hotel.price?.toLocaleString()}/night
+                </span>
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-gray-600">Nights</span>
@@ -102,7 +115,9 @@ const BookingConfirmationModal = ({
           <div className="bg-green-50 border border-green-200 rounded-lg p-3 mb-6">
             <div className="flex items-center space-x-2">
               <CheckCircle className="h-4 w-4 text-green-600 flex-shrink-0" />
-              <span className="text-sm text-green-700">Secure payment with Razorpay • SSL encrypted</span>
+              <span className="text-sm text-green-700">
+                Secure payment with Razorpay • SSL encrypted
+              </span>
             </div>
           </div>
 

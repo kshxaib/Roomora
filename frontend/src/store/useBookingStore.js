@@ -37,21 +37,31 @@ export const useBookingStore = create((set, get) => ({
     }
   },
 
-    getUserBookings: async () => {
-    set({ isLoading: true });
-    try {
-      const res = await axiosInstance.get("/bookings");
-      set({ bookings: res.data.data?.upcomingBookings || [] });
-      console.log("Upcoming Bookings:", res.data.data?.upcomingBookings);
-    } catch (error) {
-      toast.error(error.response?.data?.message || "Failed to fetch bookings");
-      set({ bookings: [] });
-    } finally {
-      set({ isLoading: false });
-    }
+  getUserBookings: async () => {
+  set({ isLoading: true });
+  try {
+    const res = await axiosInstance.get("/bookings");
+    const { upcoming, active, completed, cancelled } = res.data.data || {};
+
+    // Flatten into one array with status
+    const allBookings = [
+      ...(upcoming || []).map(b => ({ ...b, computedStatus: "Upcoming" })),
+      ...(active || []).map(b => ({ ...b, computedStatus: "Active" })),
+      ...(completed || []).map(b => ({ ...b, computedStatus: "Completed" })),
+      ...(cancelled || []).map(b => ({ ...b, computedStatus: "Cancelled" })),
+    ];
+
+    set({ bookings: allBookings });
+    console.log("Flattened Bookings:", allBookings);
+  } catch (error) {
+    toast.error(error.response?.data?.message || "Failed to fetch bookings");
+    set({ bookings: [] });
+  } finally {
+    set({ isLoading: false });
+  }
   },
 
-   cancelBooking: async (bookingId) => {
+  cancelBooking: async (bookingId) => {
     try {
       const res = await axiosInstance.delete(`/bookings/${bookingId}`);
       toast.success(res.data.message);

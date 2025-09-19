@@ -15,14 +15,20 @@ const HotelDetails = () => {
   const navigate = useNavigate();
   const { selectedHotel, getHotelById, isLoading } = useHotelStore();
   const { authUser } = useAuthStore();
-  const { createBooking, verifyBookingPayment, isCreatingBooking, isCheckingStatus } = useBookingStore();
-  
+  const {
+    createBooking,
+    verifyBookingPayment,
+    isCreatingBooking,
+    isCheckingStatus,
+  } = useBookingStore();
+
   const [checkInDate, setCheckInDate] = useState("");
   const [checkOutDate, setCheckOutDate] = useState("");
   const [guests, setGuests] = useState(1);
   const [activeImage, setActiveImage] = useState(0);
   const [showBookingModal, setShowBookingModal] = useState(false);
   const [bookingData, setBookingData] = useState(null);
+  const [bookingName, setBookingName] = useState(authUser?.name || "");
 
   useEffect(() => {
     if (id) {
@@ -34,9 +40,9 @@ const HotelDetails = () => {
     const today = new Date();
     const tomorrow = new Date(today);
     tomorrow.setDate(tomorrow.getDate() + 1);
-    
-    setCheckInDate(today.toISOString().split('T')[0]);
-    setCheckOutDate(tomorrow.toISOString().split('T')[0]);
+
+    setCheckInDate(today.toISOString().split("T")[0]);
+    setCheckOutDate(tomorrow.toISOString().split("T")[0]);
   }, []);
 
   const calculateNights = () => {
@@ -88,7 +94,8 @@ const HotelDetails = () => {
       checkIn: checkInDate,
       checkOut: checkOutDate,
       guests,
-      totalAmount: calculateTotal()
+      totalAmount: calculateTotal(),
+      name: bookingName,
     };
 
     setBookingData(bookingPayload);
@@ -98,9 +105,12 @@ const HotelDetails = () => {
   const initiatePayment = async () => {
     try {
       const bookingResponse = await createBooking(bookingData);
-      
+
       if (bookingResponse && bookingResponse.order) {
-        await openRazorpayCheckout(bookingResponse.order, bookingResponse.bookingId);
+        await openRazorpayCheckout(
+          bookingResponse.order,
+          bookingResponse.bookingId
+        );
       }
     } catch (error) {
       toast.error("Failed to initiate payment");
@@ -128,9 +138,9 @@ const HotelDetails = () => {
             razorpay_payment_id: response.razorpay_payment_id,
             razorpay_order_id: response.razorpay_order_id,
             razorpay_signature: response.razorpay_signature,
-            bookingId: bookingId
+            bookingId: bookingId,
           });
-          
+
           toast.success("Booking confirmed successfully!");
           setShowBookingModal(false);
           navigate("/my-bookings");
@@ -141,20 +151,20 @@ const HotelDetails = () => {
       prefill: {
         name: authUser.name,
         email: authUser.email,
-        contact: authUser.phone || ""
+        contact: authUser.phone || "",
       },
       theme: {
-        color: "#ef4444"
+        color: "#ef4444",
       },
       modal: {
-        ondismiss: function() {
+        ondismiss: function () {
           toast.info("Payment cancelled");
-        }
-      }
+        },
+      },
     };
 
     const rzp = new window.Razorpay(options);
-    
+
     rzp.on("payment.failed", function (response) {
       toast.error(`Payment failed: ${response.error.description}`);
     });
@@ -174,8 +184,10 @@ const HotelDetails = () => {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">Hotel not found</h2>
-          <button 
+          <h2 className="text-2xl font-bold text-gray-800 mb-4">
+            Hotel not found
+          </h2>
+          <button
             onClick={() => navigate("/")}
             className="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700 transition-colors"
           >
@@ -207,8 +219,8 @@ const HotelDetails = () => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Image Gallery */}
-        <HotelImageGallery 
-          images={selectedHotel.images} 
+        <HotelImageGallery
+          images={selectedHotel.images}
           activeImage={activeImage}
           setActiveImage={setActiveImage}
           hotelName={selectedHotel.name}
@@ -235,6 +247,8 @@ const HotelDetails = () => {
               calculateTotal={calculateTotal}
               handleBookNow={handleBookNow}
               isCreatingBooking={isCreatingBooking}
+              bookingName={bookingName}
+              setBookingName={setBookingName}
             />
           </div>
         </div>
@@ -252,6 +266,7 @@ const HotelDetails = () => {
           onClose={() => setShowBookingModal(false)}
           onConfirm={initiatePayment}
           isLoading={isCreatingBooking || isCheckingStatus}
+          bookingName={bookingName}
         />
       )}
     </div>

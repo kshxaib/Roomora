@@ -59,7 +59,11 @@ export const register = async (req, res) => {
     });
 
     const emailSubject = "Welcome to Roomora - Your account created successfully";
-    await sendEmail(newUser.name, newUser.email, "", emailSubject, "");
+    await sendEmail({
+      name: newUser.name,
+      email: newUser.email,
+      subject: emailSubject
+    });
 
     res.status(201).json({
       success: true,
@@ -220,7 +224,12 @@ export const SendOtpForgotPassword = async (req, res) => {
       },
     });
 
-    await sendEmail(user.name, email, code, "Reset Your Password");
+    await sendEmail({
+      name: user.name,
+      email,
+      code,
+      subject: "Reset Your Password"
+    });
 
     return res.status(200).json({
       success: true,
@@ -386,7 +395,12 @@ export const googleRegister = async (req, res) => {
     });
 
     const emailSubject = "Welcome to Roomora - Your Account Details";
-    await sendEmail(name, email, null, emailSubject, randomPassword);
+    await sendEmail({
+      name,
+      email,
+      password: randomPassword,
+      subject: emailSubject
+    });
 
     return res.status(201).json({
       success: true,

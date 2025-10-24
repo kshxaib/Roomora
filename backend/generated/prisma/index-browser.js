@@ -132,8 +132,6 @@ exports.Prisma.UserScalarFieldEnum = {
   forgotPasswordOtp: 'forgotPasswordOtp',
   forgotPasswordOtpExpiry: 'forgotPasswordOtpExpiry',
   provider: 'provider',
-  isActive: 'isActive',
-  phone: 'phone',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -148,7 +146,6 @@ exports.Prisma.PaymentMethodScalarFieldEnum = {
   ifscCode: 'ifscCode',
   accountHolderName: 'accountHolderName',
   isDefault: 'isDefault',
-  lastFour: 'lastFour',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -166,10 +163,6 @@ exports.Prisma.HotelScalarFieldEnum = {
   amenities: 'amenities',
   totalRooms: 'totalRooms',
   availableRooms: 'availableRooms',
-  isActive: 'isActive',
-  isFeatured: 'isFeatured',
-  latitude: 'latitude',
-  longitude: 'longitude',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -189,8 +182,6 @@ exports.Prisma.BookingScalarFieldEnum = {
   isPaid: 'isPaid',
   partnerAmount: 'partnerAmount',
   adminAmount: 'adminAmount',
-  cancellationReason: 'cancellationReason',
-  specialRequests: 'specialRequests',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -203,7 +194,6 @@ exports.Prisma.EarningsScalarFieldEnum = {
   type: 'type',
   isWithdrawn: 'isWithdrawn',
   withdrawnAt: 'withdrawnAt',
-  description: 'description',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -215,38 +205,6 @@ exports.Prisma.WithdrawalScalarFieldEnum = {
   status: 'status',
   paymentMethodId: 'paymentMethodId',
   remarks: 'remarks',
-  processedBy: 'processedBy',
-  processedAt: 'processedAt',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-};
-
-exports.Prisma.SystemSettingsScalarFieldEnum = {
-  id: 'id',
-  platformFee: 'platformFee',
-  minWithdrawalAmount: 'minWithdrawalAmount',
-  autoApproveHotels: 'autoApproveHotels',
-  emailNotifications: 'emailNotifications',
-  smsNotifications: 'smsNotifications',
-  maintenanceMode: 'maintenanceMode',
-  razorpayEnabled: 'razorpayEnabled',
-  walletEnabled: 'walletEnabled',
-  sessionTimeout: 'sessionTimeout',
-  passwordPolicy: 'passwordPolicy',
-  twoFactorAuth: 'twoFactorAuth',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-};
-
-exports.Prisma.AuditLogScalarFieldEnum = {
-  id: 'id',
-  userId: 'userId',
-  action: 'action',
-  entity: 'entity',
-  entityId: 'entityId',
-  details: 'details',
-  ipAddress: 'ipAddress',
-  userAgent: 'userAgent',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -254,11 +212,6 @@ exports.Prisma.AuditLogScalarFieldEnum = {
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
-};
-
-exports.Prisma.NullableJsonNullValueInput = {
-  DbNull: Prisma.DbNull,
-  JsonNull: Prisma.JsonNull
 };
 
 exports.Prisma.QueryMode = {
@@ -269,12 +222,6 @@ exports.Prisma.QueryMode = {
 exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
-};
-
-exports.Prisma.JsonNullValueFilter = {
-  DbNull: Prisma.DbNull,
-  JsonNull: Prisma.JsonNull,
-  AnyNull: Prisma.AnyNull
 };
 exports.UserRole = exports.$Enums.UserRole = {
   ADMIN: 'ADMIN',
@@ -311,9 +258,7 @@ exports.Prisma.ModelName = {
   Hotel: 'Hotel',
   Booking: 'Booking',
   Earnings: 'Earnings',
-  Withdrawal: 'Withdrawal',
-  SystemSettings: 'SystemSettings',
-  AuditLog: 'AuditLog'
+  Withdrawal: 'Withdrawal'
 };
 
 /**

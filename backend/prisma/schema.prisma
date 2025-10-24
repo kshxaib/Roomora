@@ -49,6 +49,8 @@ model User {
   forgotPasswordOtp       String?
   forgotPasswordOtpExpiry DateTime?
   provider                String?
+  isActive      Boolean   @default(true) // NEW: For user activation/deactivation
+  phone         String?   // NEW: Phone number  x
 
   paymentMethods PaymentMethod[]
   
@@ -56,6 +58,7 @@ model User {
   bookings  Booking[]
   earnings  Earnings[]
   withdrawals Withdrawal[]
+   auditLogs AuditLog[] 
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -71,6 +74,7 @@ model PaymentMethod {
   ifscCode    String?
   accountHolderName String?
   isDefault   Boolean   @default(false)
+  lastFour    String?   // NEW: Last 4 digits for display
 
   withdrawals Withdrawal[]
 
@@ -92,9 +96,12 @@ model Hotel {
   rating        Float    @default(0)
   images        String[]
   amenities     String[]
-  
   totalRooms    Int      
   availableRooms Int     
+  isActive      Boolean  @default(false) // NEW: Admin approval required  x
+  isFeatured    Boolean  @default(false) // NEW: Featured hotels  x
+  latitude      Float?   // NEW: For maps  x
+  longitude     Float?   // NEW: For maps  x
 
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
@@ -111,13 +118,14 @@ model Booking {
   guests            Int
   totalAmount       Float
   status            BookingStatus  @default(PENDING)
-
   paymentId         String?       
   paymentOrderId    String?        
   paymentSignature  String?        
   isPaid            Boolean        @default(false) 
   partnerAmount     Float?         
   adminAmount       Float?         
+  cancellationReason String?       // NEW: Reason for cancellation
+  specialRequests   String?        // NEW: Special requests from user
 
   createdAt         DateTime       @default(now())
   updatedAt         DateTime       @updatedAt
@@ -135,6 +143,7 @@ model Earnings {
   type        EarningsType
   isWithdrawn Boolean   @default(false)
   withdrawnAt DateTime?
+  description String?   // NEW: Description of earnings
 
   user        User      @relation(fields: [userId], references: [id])
   booking     Booking   @relation(fields: [bookingId], references: [id])
@@ -150,10 +159,48 @@ model Withdrawal {
   status      WithdrawalStatus @default(PENDING)
   paymentMethodId String
   remarks     String?
+  processedBy String?   // NEW: Admin who processed the withdrawal
+  processedAt DateTime? // NEW: When it was processed
 
   user        User      @relation(fields: [userId], references: [id])
   paymentMethod PaymentMethod @relation(fields: [paymentMethodId], references: [id])
 
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
+}
+
+// NEW: System Settings Model  x
+model SystemSettings {
+  id                 String  @id @default(uuid())
+  platformFee        Float   @default(10.0)
+  minWithdrawalAmount Float  @default(100.0)
+  autoApproveHotels  Boolean @default(false)
+  emailNotifications Boolean @default(true)
+  smsNotifications   Boolean @default(false)
+  maintenanceMode    Boolean @default(false)
+  razorpayEnabled    Boolean @default(true)
+  walletEnabled      Boolean @default(true)
+  sessionTimeout     Int     @default(30)
+  passwordPolicy     String  @default("medium")
+  twoFactorAuth      String  @default("optional")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// NEW: Audit Log Model  x
+model AuditLog {
+  id        String   @id @default(uuid())
+  userId    String?
+  action    String
+  entity    String
+  entityId  String?
+  details   Json?
+  ipAddress String?
+  userAgent String?
+
+  user      User?    @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

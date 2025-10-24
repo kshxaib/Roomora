@@ -31,7 +31,7 @@ export const getPartnerDashboard = async (req, res) => {
 
         // Get earnings summary
         const earnings = await db.earnings.aggregate({
-            where: { 
+            where: {
                 userId,
                 type: "PARTNER_EARNINGS"
             },
@@ -167,6 +167,67 @@ export const getPartnerHotelBookings = async (req, res) => {
     }
 };
 
+export const getBookingDetails = async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const user = await db.user.findUnique({
+            where: { id: userId }
+        });
+        const userRole = user.role;
+        const bookingId = req.params.id;
+
+        if (userRole !== "PARTNER") {
+            return res.status(403).json({
+                success: false,
+                message: "Only partners can access this",
+            });
+        }
+
+        const booking = await db.booking.findUnique({
+            where: { id: bookingId },
+            include: {
+                user: { select: { id: true, name: true, email: true } },
+                hotel: { select: { id: true, name: true, city: true, address: true } },
+            },
+        });
+
+        // if (!booking || booking.hotel.ownerId !== userId) {
+        //     return res.status(404).json({
+        //         success: false,
+        //         message: "Booking not found or unauthorizedsss",
+        //     });
+        // }
+
+        return res.status(200).json({
+            success: true,
+            message: "Booking details fetched",
+            data: {
+                id: booking.id,
+                hotelName: booking.hotel.name,
+                hotelCity: booking.hotel.city,
+                hotelAddress: booking.hotel.address,
+                guestName: booking.user.name,
+                guestEmail: booking.user.email,
+                checkIn: booking.checkIn,
+                checkOut: booking.checkOut,
+                bookingDate: booking.createdAt,
+                guests: booking.guests,
+                totalAmount: booking.totalAmount,
+                partnerAmount: booking.partnerAmount,
+                adminAmount: booking.adminAmount,
+                status: booking.status,
+                isPaid: booking.isPaid,
+            },
+        });
+    } catch (error) {
+        console.error("Error fetching booking details:", error);
+        return res.status(500).json({
+            success: false,
+            message: error?.message || "Internal server error",
+        });
+    }
+};
+
 export const requestWithdrawal = async (req, res) => {
     try {
         const userId = req.user.id;
@@ -274,7 +335,7 @@ export const getPartnerWithdrawals = async (req, res) => {
                 status: withdrawal.status,
                 paymentMethod: {
                     type: withdrawal.paymentMethod.type,
-                    lastFour: withdrawal.paymentMethod.type === "BANK_ACCOUNT" 
+                    lastFour: withdrawal.paymentMethod.type === "BANK_ACCOUNT"
                         ? withdrawal.paymentMethod.accountNumber.slice(-4)
                         : withdrawal.paymentMethod.upiId.split('@')[0]
                 },

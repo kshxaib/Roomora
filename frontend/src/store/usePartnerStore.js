@@ -6,7 +6,11 @@ export const usePartnerStore = create((set, get) => ({
   dashboardData: null,
   withdrawals: [],
   paymentMethods: [],
+  bookings: [],
+  selectedBooking: null,
   isLoading: false,
+
+  clearSelectedBooking: () => set({ selectedBooking: null }),
 
   fetchDashboardData: async () => {
     set({ isLoading: true });
@@ -15,6 +19,30 @@ export const usePartnerStore = create((set, get) => ({
       set({ dashboardData: res.data.data });
     } catch (error) {
       toast.error(error.response?.data?.message || "Failed to fetch dashboard data");
+    } finally {
+      set({ isLoading: false });
+    }
+  },
+
+  fetchBookingDetails: async (id) => {
+    set({ isLoading: true });
+    try {
+      const res = await axiosInstance.get(`/partners/booking/${id}`);
+      set({ selectedBooking: res.data.data });
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Failed to fetch booking details");
+    } finally {
+      set({ isLoading: false });
+    }
+  },
+
+  fetchBookings: async () => {
+    set({ isLoading: true });
+    try {
+      const res = await axiosInstance.get("/partners/bookings");
+      set({ bookings: res.data.data });
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Failed to fetch bookings");
     } finally {
       set({ isLoading: false });
     }
@@ -30,14 +58,15 @@ export const usePartnerStore = create((set, get) => ({
   },
 
   requestWithdrawal: async (data) => {
+    set({ isLoading: true });
     try {
       const res = await axiosInstance.post("/partners/withdrawals", data);
-      set({ isLoading: false });
       toast.success(res.data.message);
       get().fetchWithdrawals();
-      get().fetchDashboardData(); 
+      get().fetchDashboardData();
     } catch (error) {
       toast.error(error.response?.data?.message || "Failed to request withdrawal");
+    } finally {
       set({ isLoading: false });
     }
   },

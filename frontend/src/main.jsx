@@ -20,6 +20,7 @@ import ForgotPasswordPage from "./components/Auth/ForgotPasswordPage.jsx";
 import PartnerDashboard from "./components/Partner/PartnerDashboard.jsx";
 import HotelDetails from "./components/HotelBooking/HotelDetails.jsx";
 import MyBookingPage from "./components/HotelBooking/MyBookingPage.jsx";
+import AdminDashboard from "./components/Admin/AdminDashboard.jsx";
 
 function App() {
   const { getCurrentUser, authUser } = useAuthStore();
@@ -59,6 +60,10 @@ function App() {
         <Route
           path="my-bookings"
           element={authUser ? <MyBookingPage /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="admin-dashboard"
+          element={authUser ? <AdminDashboard /> : <Navigate to="/login" />}
         />
       </Route>
       

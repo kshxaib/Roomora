@@ -34,14 +34,15 @@ export default function Header() {
     );
   }
 
-
-
   return (
     <header className="bg-white shadow mb-[-65px] sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <Link to="/" className="text-2xl font-bold text-red-600 tracking-wide">
+          <Link
+            to="/"
+            className="text-2xl font-bold text-red-600 tracking-wide"
+          >
             Roomora
           </Link>
 
@@ -70,7 +71,10 @@ export default function Header() {
                   className="flex items-center space-x-2 focus:outline-none hover:bg-gray-50 px-3 py-2 rounded-lg transition"
                 >
                   <img
-                    src={authUser.avatarUrl || "https://www.bing.com/ck/a?!&&p=1061cfad45fffe9a01e3c0078230e570727c144aa55a8dfb15e9c0c51ae3654fJmltdHM9MTc1NzExNjgwMA&ptn=3&ver=2&hsh=4&fclid=37969114-e3ab-6a91-2010-8430e2036bea&u=a1L2ltYWdlcy9zZWFyY2g_cT1wcm9maWxlK2ltYWdlK2RlZmF1bHQmaWQ9MUQ4NTcyNDc1NjFBNTFENkNCNUY5OUU2QzA3RkM1ODUyODhCRjQyNCZGT1JNPUlBQ0ZJUg&ntb=1"}
+                    src={
+                      authUser.avatarUrl ||
+                      "https://www.bing.com/ck/a?!&&p=1061cfad45fffe9a01e3c0078230e570727c144aa55a8dfb15e9c0c51ae3654fJmltdHM9MTc1NzExNjgwMA&ptn=3&ver=2&hsh=4&fclid=37969114-e3ab-6a91-2010-8430e2036bea&u=a1L2ltYWdlcy9zZWFyY2g_cT1wcm9maWxlK2ltYWdlK2RlZmF1bHQmaWQ9MUQ4NTcyNDc1NjFBNTFENkNCNUY5OUU2QzA3RkM1ODUyODhCRjQyNCZGT1JNPUlBQ0ZJUg&ntb=1"
+                    }
                     alt="avatar"
                     className="w-9 h-9 rounded-full border border-gray-200 shadow-sm"
                   />
@@ -90,7 +94,6 @@ export default function Header() {
                     {/* User Info */}
                     <div className="px-4 py-4 bg-gray-50 border-b">
                       <div className="flex items-center space-x-3">
-              
                         <div>
                           <p className="text-sm font-semibold text-gray-900">
                             {authUser.name}
@@ -117,16 +120,22 @@ export default function Header() {
                           My Bookings
                         </Link>
                       )}
-                     {
-                      authUser.role === "PARTNER" && (
+                      {authUser.role === "PARTNER" && (
                         <Link
                           to="/partner-dashboard"
                           className="block px-4 py-2 text-sm text-gray-700 hover:bg-red-50 hover:text-red-600 transition"
                         >
                           Partner Dashboard
                         </Link>
-                      )
-                     }                      
+                      )}
+                      {authUser.role === "ADMIN" && (
+                        <Link
+                          to="/admin-dashboard"
+                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-red-50 hover:text-red-600 transition"
+                        >
+                          Admin Dashboard
+                        </Link>
+                      )}
                       <Link
                         to="/help"
                         className="block px-4 py-2 text-sm text-gray-700 hover:bg-red-50 hover:text-red-600 transition"

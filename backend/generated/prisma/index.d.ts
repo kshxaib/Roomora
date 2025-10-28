@@ -1586,6 +1586,7 @@ export namespace Prisma {
     forgotPasswordOtp: string | null
     forgotPasswordOtpExpiry: Date | null
     provider: string | null
+    isActive: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -1602,6 +1603,7 @@ export namespace Prisma {
     forgotPasswordOtp: string | null
     forgotPasswordOtpExpiry: Date | null
     provider: string | null
+    isActive: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -1618,6 +1620,7 @@ export namespace Prisma {
     forgotPasswordOtp: number
     forgotPasswordOtpExpiry: number
     provider: number
+    isActive: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -1646,6 +1649,7 @@ export namespace Prisma {
     forgotPasswordOtp?: true
     forgotPasswordOtpExpiry?: true
     provider?: true
+    isActive?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -1662,6 +1666,7 @@ export namespace Prisma {
     forgotPasswordOtp?: true
     forgotPasswordOtpExpiry?: true
     provider?: true
+    isActive?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -1678,6 +1683,7 @@ export namespace Prisma {
     forgotPasswordOtp?: true
     forgotPasswordOtpExpiry?: true
     provider?: true
+    isActive?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -1781,6 +1787,7 @@ export namespace Prisma {
     forgotPasswordOtp: string | null
     forgotPasswordOtpExpiry: Date | null
     provider: string | null
+    isActive: boolean
     createdAt: Date
     updatedAt: Date
     _count: UserCountAggregateOutputType | null
@@ -1816,6 +1823,7 @@ export namespace Prisma {
     forgotPasswordOtp?: boolean
     forgotPasswordOtpExpiry?: boolean
     provider?: boolean
+    isActive?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     paymentMethods?: boolean | User$paymentMethodsArgs<ExtArgs>
@@ -1838,6 +1846,7 @@ export namespace Prisma {
     forgotPasswordOtp?: boolean
     forgotPasswordOtpExpiry?: boolean
     provider?: boolean
+    isActive?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["user"]>
@@ -1854,6 +1863,7 @@ export namespace Prisma {
     forgotPasswordOtp?: boolean
     forgotPasswordOtpExpiry?: boolean
     provider?: boolean
+    isActive?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["user"]>
@@ -1870,11 +1880,12 @@ export namespace Prisma {
     forgotPasswordOtp?: boolean
     forgotPasswordOtpExpiry?: boolean
     provider?: boolean
+    isActive?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "password" | "role" | "avatarUrl" | "totalEarnings" | "walletBalance" | "forgotPasswordOtp" | "forgotPasswordOtpExpiry" | "provider" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "password" | "role" | "avatarUrl" | "totalEarnings" | "walletBalance" | "forgotPasswordOtp" | "forgotPasswordOtpExpiry" | "provider" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     paymentMethods?: boolean | User$paymentMethodsArgs<ExtArgs>
     hotels?: boolean | User$hotelsArgs<ExtArgs>
@@ -1907,6 +1918,7 @@ export namespace Prisma {
       forgotPasswordOtp: string | null
       forgotPasswordOtpExpiry: Date | null
       provider: string | null
+      isActive: boolean
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["user"]>
@@ -2348,6 +2360,7 @@ export namespace Prisma {
     readonly forgotPasswordOtp: FieldRef<"User", 'String'>
     readonly forgotPasswordOtpExpiry: FieldRef<"User", 'DateTime'>
     readonly provider: FieldRef<"User", 'String'>
+    readonly isActive: FieldRef<"User", 'Boolean'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
     readonly updatedAt: FieldRef<"User", 'DateTime'>
   }
@@ -4079,6 +4092,7 @@ export namespace Prisma {
     rating: number | null
     totalRooms: number | null
     availableRooms: number | null
+    isActive: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -4094,6 +4108,7 @@ export namespace Prisma {
     rating: number | null
     totalRooms: number | null
     availableRooms: number | null
+    isActive: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -4111,6 +4126,7 @@ export namespace Prisma {
     amenities: number
     totalRooms: number
     availableRooms: number
+    isActive: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -4142,6 +4158,7 @@ export namespace Prisma {
     rating?: true
     totalRooms?: true
     availableRooms?: true
+    isActive?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -4157,6 +4174,7 @@ export namespace Prisma {
     rating?: true
     totalRooms?: true
     availableRooms?: true
+    isActive?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -4174,6 +4192,7 @@ export namespace Prisma {
     amenities?: true
     totalRooms?: true
     availableRooms?: true
+    isActive?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -4278,6 +4297,7 @@ export namespace Prisma {
     amenities: string[]
     totalRooms: number
     availableRooms: number
+    isActive: boolean
     createdAt: Date
     updatedAt: Date
     _count: HotelCountAggregateOutputType | null
@@ -4314,6 +4334,7 @@ export namespace Prisma {
     amenities?: boolean
     totalRooms?: boolean
     availableRooms?: boolean
+    isActive?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     owner?: boolean | UserDefaultArgs<ExtArgs>
@@ -4334,6 +4355,7 @@ export namespace Prisma {
     amenities?: boolean
     totalRooms?: boolean
     availableRooms?: boolean
+    isActive?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     owner?: boolean | UserDefaultArgs<ExtArgs>
@@ -4352,6 +4374,7 @@ export namespace Prisma {
     amenities?: boolean
     totalRooms?: boolean
     availableRooms?: boolean
+    isActive?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     owner?: boolean | UserDefaultArgs<ExtArgs>
@@ -4370,11 +4393,12 @@ export namespace Prisma {
     amenities?: boolean
     totalRooms?: boolean
     availableRooms?: boolean
+    isActive?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type HotelOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "ownerId" | "name" | "description" | "city" | "address" | "price" | "rating" | "images" | "amenities" | "totalRooms" | "availableRooms" | "createdAt" | "updatedAt", ExtArgs["result"]["hotel"]>
+  export type HotelOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "ownerId" | "name" | "description" | "city" | "address" | "price" | "rating" | "images" | "amenities" | "totalRooms" | "availableRooms" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["hotel"]>
   export type HotelInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     owner?: boolean | UserDefaultArgs<ExtArgs>
     bookings?: boolean | Hotel$bookingsArgs<ExtArgs>
@@ -4406,6 +4430,7 @@ export namespace Prisma {
       amenities: string[]
       totalRooms: number
       availableRooms: number
+      isActive: boolean
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["hotel"]>
@@ -4845,6 +4870,7 @@ export namespace Prisma {
     readonly amenities: FieldRef<"Hotel", 'String[]'>
     readonly totalRooms: FieldRef<"Hotel", 'Int'>
     readonly availableRooms: FieldRef<"Hotel", 'Int'>
+    readonly isActive: FieldRef<"Hotel", 'Boolean'>
     readonly createdAt: FieldRef<"Hotel", 'DateTime'>
     readonly updatedAt: FieldRef<"Hotel", 'DateTime'>
   }
@@ -7749,6 +7775,8 @@ export namespace Prisma {
     status: $Enums.WithdrawalStatus | null
     paymentMethodId: string | null
     remarks: string | null
+    processedBy: string | null
+    processedAt: Date | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -7760,6 +7788,8 @@ export namespace Prisma {
     status: $Enums.WithdrawalStatus | null
     paymentMethodId: string | null
     remarks: string | null
+    processedBy: string | null
+    processedAt: Date | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -7771,6 +7801,8 @@ export namespace Prisma {
     status: number
     paymentMethodId: number
     remarks: number
+    processedBy: number
+    processedAt: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -7792,6 +7824,8 @@ export namespace Prisma {
     status?: true
     paymentMethodId?: true
     remarks?: true
+    processedBy?: true
+    processedAt?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -7803,6 +7837,8 @@ export namespace Prisma {
     status?: true
     paymentMethodId?: true
     remarks?: true
+    processedBy?: true
+    processedAt?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -7814,6 +7850,8 @@ export namespace Prisma {
     status?: true
     paymentMethodId?: true
     remarks?: true
+    processedBy?: true
+    processedAt?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -7912,6 +7950,8 @@ export namespace Prisma {
     status: $Enums.WithdrawalStatus
     paymentMethodId: string
     remarks: string | null
+    processedBy: string | null
+    processedAt: Date | null
     createdAt: Date
     updatedAt: Date
     _count: WithdrawalCountAggregateOutputType | null
@@ -7942,6 +7982,8 @@ export namespace Prisma {
     status?: boolean
     paymentMethodId?: boolean
     remarks?: boolean
+    processedBy?: boolean
+    processedAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -7955,6 +7997,8 @@ export namespace Prisma {
     status?: boolean
     paymentMethodId?: boolean
     remarks?: boolean
+    processedBy?: boolean
+    processedAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -7968,6 +8012,8 @@ export namespace Prisma {
     status?: boolean
     paymentMethodId?: boolean
     remarks?: boolean
+    processedBy?: boolean
+    processedAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -7981,11 +8027,13 @@ export namespace Prisma {
     status?: boolean
     paymentMethodId?: boolean
     remarks?: boolean
+    processedBy?: boolean
+    processedAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type WithdrawalOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "amount" | "status" | "paymentMethodId" | "remarks" | "createdAt" | "updatedAt", ExtArgs["result"]["withdrawal"]>
+  export type WithdrawalOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "amount" | "status" | "paymentMethodId" | "remarks" | "processedBy" | "processedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["withdrawal"]>
   export type WithdrawalInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     paymentMethod?: boolean | PaymentMethodDefaultArgs<ExtArgs>
@@ -8012,6 +8060,8 @@ export namespace Prisma {
       status: $Enums.WithdrawalStatus
       paymentMethodId: string
       remarks: string | null
+      processedBy: string | null
+      processedAt: Date | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["withdrawal"]>
@@ -8445,6 +8495,8 @@ export namespace Prisma {
     readonly status: FieldRef<"Withdrawal", 'WithdrawalStatus'>
     readonly paymentMethodId: FieldRef<"Withdrawal", 'String'>
     readonly remarks: FieldRef<"Withdrawal", 'String'>
+    readonly processedBy: FieldRef<"Withdrawal", 'String'>
+    readonly processedAt: FieldRef<"Withdrawal", 'DateTime'>
     readonly createdAt: FieldRef<"Withdrawal", 'DateTime'>
     readonly updatedAt: FieldRef<"Withdrawal", 'DateTime'>
   }
@@ -8887,6 +8939,7 @@ export namespace Prisma {
     forgotPasswordOtp: 'forgotPasswordOtp',
     forgotPasswordOtpExpiry: 'forgotPasswordOtpExpiry',
     provider: 'provider',
+    isActive: 'isActive',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -8924,6 +8977,7 @@ export namespace Prisma {
     amenities: 'amenities',
     totalRooms: 'totalRooms',
     availableRooms: 'availableRooms',
+    isActive: 'isActive',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -8975,6 +9029,8 @@ export namespace Prisma {
     status: 'status',
     paymentMethodId: 'paymentMethodId',
     remarks: 'remarks',
+    processedBy: 'processedBy',
+    processedAt: 'processedAt',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -9068,6 +9124,13 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Boolean'
+   */
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+  /**
    * Reference to a field of type 'PaymentMethodType'
    */
   export type EnumPaymentMethodTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentMethodType'>
@@ -9078,13 +9141,6 @@ export namespace Prisma {
    * Reference to a field of type 'PaymentMethodType[]'
    */
   export type ListEnumPaymentMethodTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentMethodType[]'>
-    
-
-
-  /**
-   * Reference to a field of type 'Boolean'
-   */
-  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
@@ -9162,6 +9218,7 @@ export namespace Prisma {
     forgotPasswordOtp?: StringNullableFilter<"User"> | string | null
     forgotPasswordOtpExpiry?: DateTimeNullableFilter<"User"> | Date | string | null
     provider?: StringNullableFilter<"User"> | string | null
+    isActive?: BoolFilter<"User"> | boolean
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     paymentMethods?: PaymentMethodListRelationFilter
@@ -9183,6 +9240,7 @@ export namespace Prisma {
     forgotPasswordOtp?: SortOrderInput | SortOrder
     forgotPasswordOtpExpiry?: SortOrderInput | SortOrder
     provider?: SortOrderInput | SortOrder
+    isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     paymentMethods?: PaymentMethodOrderByRelationAggregateInput
@@ -9207,6 +9265,7 @@ export namespace Prisma {
     forgotPasswordOtp?: StringNullableFilter<"User"> | string | null
     forgotPasswordOtpExpiry?: DateTimeNullableFilter<"User"> | Date | string | null
     provider?: StringNullableFilter<"User"> | string | null
+    isActive?: BoolFilter<"User"> | boolean
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     paymentMethods?: PaymentMethodListRelationFilter
@@ -9228,6 +9287,7 @@ export namespace Prisma {
     forgotPasswordOtp?: SortOrderInput | SortOrder
     forgotPasswordOtpExpiry?: SortOrderInput | SortOrder
     provider?: SortOrderInput | SortOrder
+    isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: UserCountOrderByAggregateInput
@@ -9252,6 +9312,7 @@ export namespace Prisma {
     forgotPasswordOtp?: StringNullableWithAggregatesFilter<"User"> | string | null
     forgotPasswordOtpExpiry?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
     provider?: StringNullableWithAggregatesFilter<"User"> | string | null
+    isActive?: BoolWithAggregatesFilter<"User"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
   }
@@ -9360,6 +9421,7 @@ export namespace Prisma {
     amenities?: StringNullableListFilter<"Hotel">
     totalRooms?: IntFilter<"Hotel"> | number
     availableRooms?: IntFilter<"Hotel"> | number
+    isActive?: BoolFilter<"Hotel"> | boolean
     createdAt?: DateTimeFilter<"Hotel"> | Date | string
     updatedAt?: DateTimeFilter<"Hotel"> | Date | string
     owner?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -9379,6 +9441,7 @@ export namespace Prisma {
     amenities?: SortOrder
     totalRooms?: SortOrder
     availableRooms?: SortOrder
+    isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     owner?: UserOrderByWithRelationInput
@@ -9401,6 +9464,7 @@ export namespace Prisma {
     amenities?: StringNullableListFilter<"Hotel">
     totalRooms?: IntFilter<"Hotel"> | number
     availableRooms?: IntFilter<"Hotel"> | number
+    isActive?: BoolFilter<"Hotel"> | boolean
     createdAt?: DateTimeFilter<"Hotel"> | Date | string
     updatedAt?: DateTimeFilter<"Hotel"> | Date | string
     owner?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -9420,6 +9484,7 @@ export namespace Prisma {
     amenities?: SortOrder
     totalRooms?: SortOrder
     availableRooms?: SortOrder
+    isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: HotelCountOrderByAggregateInput
@@ -9445,6 +9510,7 @@ export namespace Prisma {
     amenities?: StringNullableListFilter<"Hotel">
     totalRooms?: IntWithAggregatesFilter<"Hotel"> | number
     availableRooms?: IntWithAggregatesFilter<"Hotel"> | number
+    isActive?: BoolWithAggregatesFilter<"Hotel"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"Hotel"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Hotel"> | Date | string
   }
@@ -9657,6 +9723,8 @@ export namespace Prisma {
     status?: EnumWithdrawalStatusFilter<"Withdrawal"> | $Enums.WithdrawalStatus
     paymentMethodId?: StringFilter<"Withdrawal"> | string
     remarks?: StringNullableFilter<"Withdrawal"> | string | null
+    processedBy?: StringNullableFilter<"Withdrawal"> | string | null
+    processedAt?: DateTimeNullableFilter<"Withdrawal"> | Date | string | null
     createdAt?: DateTimeFilter<"Withdrawal"> | Date | string
     updatedAt?: DateTimeFilter<"Withdrawal"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -9670,6 +9738,8 @@ export namespace Prisma {
     status?: SortOrder
     paymentMethodId?: SortOrder
     remarks?: SortOrderInput | SortOrder
+    processedBy?: SortOrderInput | SortOrder
+    processedAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     user?: UserOrderByWithRelationInput
@@ -9686,6 +9756,8 @@ export namespace Prisma {
     status?: EnumWithdrawalStatusFilter<"Withdrawal"> | $Enums.WithdrawalStatus
     paymentMethodId?: StringFilter<"Withdrawal"> | string
     remarks?: StringNullableFilter<"Withdrawal"> | string | null
+    processedBy?: StringNullableFilter<"Withdrawal"> | string | null
+    processedAt?: DateTimeNullableFilter<"Withdrawal"> | Date | string | null
     createdAt?: DateTimeFilter<"Withdrawal"> | Date | string
     updatedAt?: DateTimeFilter<"Withdrawal"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -9699,6 +9771,8 @@ export namespace Prisma {
     status?: SortOrder
     paymentMethodId?: SortOrder
     remarks?: SortOrderInput | SortOrder
+    processedBy?: SortOrderInput | SortOrder
+    processedAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: WithdrawalCountOrderByAggregateInput
@@ -9718,6 +9792,8 @@ export namespace Prisma {
     status?: EnumWithdrawalStatusWithAggregatesFilter<"Withdrawal"> | $Enums.WithdrawalStatus
     paymentMethodId?: StringWithAggregatesFilter<"Withdrawal"> | string
     remarks?: StringNullableWithAggregatesFilter<"Withdrawal"> | string | null
+    processedBy?: StringNullableWithAggregatesFilter<"Withdrawal"> | string | null
+    processedAt?: DateTimeNullableWithAggregatesFilter<"Withdrawal"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Withdrawal"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Withdrawal"> | Date | string
   }
@@ -9734,6 +9810,7 @@ export namespace Prisma {
     forgotPasswordOtp?: string | null
     forgotPasswordOtpExpiry?: Date | string | null
     provider?: string | null
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     paymentMethods?: PaymentMethodCreateNestedManyWithoutUserInput
@@ -9755,6 +9832,7 @@ export namespace Prisma {
     forgotPasswordOtp?: string | null
     forgotPasswordOtpExpiry?: Date | string | null
     provider?: string | null
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     paymentMethods?: PaymentMethodUncheckedCreateNestedManyWithoutUserInput
@@ -9776,6 +9854,7 @@ export namespace Prisma {
     forgotPasswordOtp?: NullableStringFieldUpdateOperationsInput | string | null
     forgotPasswordOtpExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     provider?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     paymentMethods?: PaymentMethodUpdateManyWithoutUserNestedInput
@@ -9797,6 +9876,7 @@ export namespace Prisma {
     forgotPasswordOtp?: NullableStringFieldUpdateOperationsInput | string | null
     forgotPasswordOtpExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     provider?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     paymentMethods?: PaymentMethodUncheckedUpdateManyWithoutUserNestedInput
@@ -9818,6 +9898,7 @@ export namespace Prisma {
     forgotPasswordOtp?: string | null
     forgotPasswordOtpExpiry?: Date | string | null
     provider?: string | null
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -9834,6 +9915,7 @@ export namespace Prisma {
     forgotPasswordOtp?: NullableStringFieldUpdateOperationsInput | string | null
     forgotPasswordOtpExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     provider?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -9850,6 +9932,7 @@ export namespace Prisma {
     forgotPasswordOtp?: NullableStringFieldUpdateOperationsInput | string | null
     forgotPasswordOtpExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     provider?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -9967,6 +10050,7 @@ export namespace Prisma {
     amenities?: HotelCreateamenitiesInput | string[]
     totalRooms: number
     availableRooms: number
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     owner: UserCreateNestedOneWithoutHotelsInput
@@ -9986,6 +10070,7 @@ export namespace Prisma {
     amenities?: HotelCreateamenitiesInput | string[]
     totalRooms: number
     availableRooms: number
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     bookings?: BookingUncheckedCreateNestedManyWithoutHotelInput
@@ -10003,6 +10088,7 @@ export namespace Prisma {
     amenities?: HotelUpdateamenitiesInput | string[]
     totalRooms?: IntFieldUpdateOperationsInput | number
     availableRooms?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     owner?: UserUpdateOneRequiredWithoutHotelsNestedInput
@@ -10022,6 +10108,7 @@ export namespace Prisma {
     amenities?: HotelUpdateamenitiesInput | string[]
     totalRooms?: IntFieldUpdateOperationsInput | number
     availableRooms?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     bookings?: BookingUncheckedUpdateManyWithoutHotelNestedInput
@@ -10040,6 +10127,7 @@ export namespace Prisma {
     amenities?: HotelCreateamenitiesInput | string[]
     totalRooms: number
     availableRooms: number
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -10056,6 +10144,7 @@ export namespace Prisma {
     amenities?: HotelUpdateamenitiesInput | string[]
     totalRooms?: IntFieldUpdateOperationsInput | number
     availableRooms?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -10073,6 +10162,7 @@ export namespace Prisma {
     amenities?: HotelUpdateamenitiesInput | string[]
     totalRooms?: IntFieldUpdateOperationsInput | number
     availableRooms?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -10299,6 +10389,8 @@ export namespace Prisma {
     amount: number
     status?: $Enums.WithdrawalStatus
     remarks?: string | null
+    processedBy?: string | null
+    processedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutWithdrawalsInput
@@ -10312,6 +10404,8 @@ export namespace Prisma {
     status?: $Enums.WithdrawalStatus
     paymentMethodId: string
     remarks?: string | null
+    processedBy?: string | null
+    processedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -10321,6 +10415,8 @@ export namespace Prisma {
     amount?: FloatFieldUpdateOperationsInput | number
     status?: EnumWithdrawalStatusFieldUpdateOperationsInput | $Enums.WithdrawalStatus
     remarks?: NullableStringFieldUpdateOperationsInput | string | null
+    processedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutWithdrawalsNestedInput
@@ -10334,6 +10430,8 @@ export namespace Prisma {
     status?: EnumWithdrawalStatusFieldUpdateOperationsInput | $Enums.WithdrawalStatus
     paymentMethodId?: StringFieldUpdateOperationsInput | string
     remarks?: NullableStringFieldUpdateOperationsInput | string | null
+    processedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -10345,6 +10443,8 @@ export namespace Prisma {
     status?: $Enums.WithdrawalStatus
     paymentMethodId: string
     remarks?: string | null
+    processedBy?: string | null
+    processedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -10354,6 +10454,8 @@ export namespace Prisma {
     amount?: FloatFieldUpdateOperationsInput | number
     status?: EnumWithdrawalStatusFieldUpdateOperationsInput | $Enums.WithdrawalStatus
     remarks?: NullableStringFieldUpdateOperationsInput | string | null
+    processedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -10365,6 +10467,8 @@ export namespace Prisma {
     status?: EnumWithdrawalStatusFieldUpdateOperationsInput | $Enums.WithdrawalStatus
     paymentMethodId?: StringFieldUpdateOperationsInput | string
     remarks?: NullableStringFieldUpdateOperationsInput | string | null
+    processedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -10426,6 +10530,11 @@ export namespace Prisma {
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
   export type DateTimeFilter<$PrismaModel = never> = {
@@ -10506,6 +10615,7 @@ export namespace Prisma {
     forgotPasswordOtp?: SortOrder
     forgotPasswordOtpExpiry?: SortOrder
     provider?: SortOrder
+    isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -10527,6 +10637,7 @@ export namespace Prisma {
     forgotPasswordOtp?: SortOrder
     forgotPasswordOtpExpiry?: SortOrder
     provider?: SortOrder
+    isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -10543,6 +10654,7 @@ export namespace Prisma {
     forgotPasswordOtp?: SortOrder
     forgotPasswordOtpExpiry?: SortOrder
     provider?: SortOrder
+    isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -10628,6 +10740,14 @@ export namespace Prisma {
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
   export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -10647,11 +10767,6 @@ export namespace Prisma {
     in?: $Enums.PaymentMethodType[] | ListEnumPaymentMethodTypeFieldRefInput<$PrismaModel>
     notIn?: $Enums.PaymentMethodType[] | ListEnumPaymentMethodTypeFieldRefInput<$PrismaModel>
     not?: NestedEnumPaymentMethodTypeFilter<$PrismaModel> | $Enums.PaymentMethodType
-  }
-
-  export type BoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
   export type UserScalarRelationFilter = {
@@ -10711,14 +10826,6 @@ export namespace Prisma {
     _max?: NestedEnumPaymentMethodTypeFilter<$PrismaModel>
   }
 
-  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
-  }
-
   export type StringNullableListFilter<$PrismaModel = never> = {
     equals?: string[] | ListStringFieldRefInput<$PrismaModel> | null
     has?: string | StringFieldRefInput<$PrismaModel> | null
@@ -10751,6 +10858,7 @@ export namespace Prisma {
     amenities?: SortOrder
     totalRooms?: SortOrder
     availableRooms?: SortOrder
+    isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -10773,6 +10881,7 @@ export namespace Prisma {
     rating?: SortOrder
     totalRooms?: SortOrder
     availableRooms?: SortOrder
+    isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -10788,6 +10897,7 @@ export namespace Prisma {
     rating?: SortOrder
     totalRooms?: SortOrder
     availableRooms?: SortOrder
+    isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -11020,6 +11130,8 @@ export namespace Prisma {
     status?: SortOrder
     paymentMethodId?: SortOrder
     remarks?: SortOrder
+    processedBy?: SortOrder
+    processedAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -11035,6 +11147,8 @@ export namespace Prisma {
     status?: SortOrder
     paymentMethodId?: SortOrder
     remarks?: SortOrder
+    processedBy?: SortOrder
+    processedAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -11046,6 +11160,8 @@ export namespace Prisma {
     status?: SortOrder
     paymentMethodId?: SortOrder
     remarks?: SortOrder
+    processedBy?: SortOrder
+    processedAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -11156,6 +11272,10 @@ export namespace Prisma {
 
   export type NullableDateTimeFieldUpdateOperationsInput = {
     set?: Date | string | null
+  }
+
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
   }
 
   export type DateTimeFieldUpdateOperationsInput = {
@@ -11324,10 +11444,6 @@ export namespace Prisma {
 
   export type EnumPaymentMethodTypeFieldUpdateOperationsInput = {
     set?: $Enums.PaymentMethodType
-  }
-
-  export type BoolFieldUpdateOperationsInput = {
-    set?: boolean
   }
 
   export type WithdrawalUpdateManyWithoutPaymentMethodNestedInput = {
@@ -11651,6 +11767,11 @@ export namespace Prisma {
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
   export type NestedDateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -11758,6 +11879,14 @@ export namespace Prisma {
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
   export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -11779,11 +11908,6 @@ export namespace Prisma {
     not?: NestedEnumPaymentMethodTypeFilter<$PrismaModel> | $Enums.PaymentMethodType
   }
 
-  export type NestedBoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
-  }
-
   export type NestedEnumPaymentMethodTypeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.PaymentMethodType | EnumPaymentMethodTypeFieldRefInput<$PrismaModel>
     in?: $Enums.PaymentMethodType[] | ListEnumPaymentMethodTypeFieldRefInput<$PrismaModel>
@@ -11792,14 +11916,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumPaymentMethodTypeFilter<$PrismaModel>
     _max?: NestedEnumPaymentMethodTypeFilter<$PrismaModel>
-  }
-
-  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
@@ -11946,6 +12062,7 @@ export namespace Prisma {
     amenities?: HotelCreateamenitiesInput | string[]
     totalRooms: number
     availableRooms: number
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     bookings?: BookingCreateNestedManyWithoutHotelInput
@@ -11963,6 +12080,7 @@ export namespace Prisma {
     amenities?: HotelCreateamenitiesInput | string[]
     totalRooms: number
     availableRooms: number
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     bookings?: BookingUncheckedCreateNestedManyWithoutHotelInput
@@ -12063,6 +12181,8 @@ export namespace Prisma {
     amount: number
     status?: $Enums.WithdrawalStatus
     remarks?: string | null
+    processedBy?: string | null
+    processedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     paymentMethod: PaymentMethodCreateNestedOneWithoutWithdrawalsInput
@@ -12074,6 +12194,8 @@ export namespace Prisma {
     status?: $Enums.WithdrawalStatus
     paymentMethodId: string
     remarks?: string | null
+    processedBy?: string | null
+    processedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -12153,6 +12275,7 @@ export namespace Prisma {
     amenities?: StringNullableListFilter<"Hotel">
     totalRooms?: IntFilter<"Hotel"> | number
     availableRooms?: IntFilter<"Hotel"> | number
+    isActive?: BoolFilter<"Hotel"> | boolean
     createdAt?: DateTimeFilter<"Hotel"> | Date | string
     updatedAt?: DateTimeFilter<"Hotel"> | Date | string
   }
@@ -12252,6 +12375,8 @@ export namespace Prisma {
     status?: EnumWithdrawalStatusFilter<"Withdrawal"> | $Enums.WithdrawalStatus
     paymentMethodId?: StringFilter<"Withdrawal"> | string
     remarks?: StringNullableFilter<"Withdrawal"> | string | null
+    processedBy?: StringNullableFilter<"Withdrawal"> | string | null
+    processedAt?: DateTimeNullableFilter<"Withdrawal"> | Date | string | null
     createdAt?: DateTimeFilter<"Withdrawal"> | Date | string
     updatedAt?: DateTimeFilter<"Withdrawal"> | Date | string
   }
@@ -12261,6 +12386,8 @@ export namespace Prisma {
     amount: number
     status?: $Enums.WithdrawalStatus
     remarks?: string | null
+    processedBy?: string | null
+    processedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutWithdrawalsInput
@@ -12272,6 +12399,8 @@ export namespace Prisma {
     amount: number
     status?: $Enums.WithdrawalStatus
     remarks?: string | null
+    processedBy?: string | null
+    processedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -12298,6 +12427,7 @@ export namespace Prisma {
     forgotPasswordOtp?: string | null
     forgotPasswordOtpExpiry?: Date | string | null
     provider?: string | null
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     hotels?: HotelCreateNestedManyWithoutOwnerInput
@@ -12318,6 +12448,7 @@ export namespace Prisma {
     forgotPasswordOtp?: string | null
     forgotPasswordOtpExpiry?: Date | string | null
     provider?: string | null
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     hotels?: HotelUncheckedCreateNestedManyWithoutOwnerInput
@@ -12370,6 +12501,7 @@ export namespace Prisma {
     forgotPasswordOtp?: NullableStringFieldUpdateOperationsInput | string | null
     forgotPasswordOtpExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     provider?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     hotels?: HotelUpdateManyWithoutOwnerNestedInput
@@ -12390,6 +12522,7 @@ export namespace Prisma {
     forgotPasswordOtp?: NullableStringFieldUpdateOperationsInput | string | null
     forgotPasswordOtpExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     provider?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     hotels?: HotelUncheckedUpdateManyWithoutOwnerNestedInput
@@ -12410,6 +12543,7 @@ export namespace Prisma {
     forgotPasswordOtp?: string | null
     forgotPasswordOtpExpiry?: Date | string | null
     provider?: string | null
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     paymentMethods?: PaymentMethodCreateNestedManyWithoutUserInput
@@ -12430,6 +12564,7 @@ export namespace Prisma {
     forgotPasswordOtp?: string | null
     forgotPasswordOtpExpiry?: Date | string | null
     provider?: string | null
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     paymentMethods?: PaymentMethodUncheckedCreateNestedManyWithoutUserInput
@@ -12514,6 +12649,7 @@ export namespace Prisma {
     forgotPasswordOtp?: NullableStringFieldUpdateOperationsInput | string | null
     forgotPasswordOtpExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     provider?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     paymentMethods?: PaymentMethodUpdateManyWithoutUserNestedInput
@@ -12534,6 +12670,7 @@ export namespace Prisma {
     forgotPasswordOtp?: NullableStringFieldUpdateOperationsInput | string | null
     forgotPasswordOtpExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     provider?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     paymentMethods?: PaymentMethodUncheckedUpdateManyWithoutUserNestedInput
@@ -12570,6 +12707,7 @@ export namespace Prisma {
     forgotPasswordOtp?: string | null
     forgotPasswordOtpExpiry?: Date | string | null
     provider?: string | null
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     paymentMethods?: PaymentMethodCreateNestedManyWithoutUserInput
@@ -12590,6 +12728,7 @@ export namespace Prisma {
     forgotPasswordOtp?: string | null
     forgotPasswordOtpExpiry?: Date | string | null
     provider?: string | null
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     paymentMethods?: PaymentMethodUncheckedCreateNestedManyWithoutUserInput
@@ -12615,6 +12754,7 @@ export namespace Prisma {
     amenities?: HotelCreateamenitiesInput | string[]
     totalRooms: number
     availableRooms: number
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     owner: UserCreateNestedOneWithoutHotelsInput
@@ -12633,6 +12773,7 @@ export namespace Prisma {
     amenities?: HotelCreateamenitiesInput | string[]
     totalRooms: number
     availableRooms: number
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -12697,6 +12838,7 @@ export namespace Prisma {
     forgotPasswordOtp?: NullableStringFieldUpdateOperationsInput | string | null
     forgotPasswordOtpExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     provider?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     paymentMethods?: PaymentMethodUpdateManyWithoutUserNestedInput
@@ -12717,6 +12859,7 @@ export namespace Prisma {
     forgotPasswordOtp?: NullableStringFieldUpdateOperationsInput | string | null
     forgotPasswordOtpExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     provider?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     paymentMethods?: PaymentMethodUncheckedUpdateManyWithoutUserNestedInput
@@ -12748,6 +12891,7 @@ export namespace Prisma {
     amenities?: HotelUpdateamenitiesInput | string[]
     totalRooms?: IntFieldUpdateOperationsInput | number
     availableRooms?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     owner?: UserUpdateOneRequiredWithoutHotelsNestedInput
@@ -12766,6 +12910,7 @@ export namespace Prisma {
     amenities?: HotelUpdateamenitiesInput | string[]
     totalRooms?: IntFieldUpdateOperationsInput | number
     availableRooms?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -12798,6 +12943,7 @@ export namespace Prisma {
     forgotPasswordOtp?: string | null
     forgotPasswordOtpExpiry?: Date | string | null
     provider?: string | null
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     paymentMethods?: PaymentMethodCreateNestedManyWithoutUserInput
@@ -12818,6 +12964,7 @@ export namespace Prisma {
     forgotPasswordOtp?: string | null
     forgotPasswordOtpExpiry?: Date | string | null
     provider?: string | null
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     paymentMethods?: PaymentMethodUncheckedCreateNestedManyWithoutUserInput
@@ -12897,6 +13044,7 @@ export namespace Prisma {
     forgotPasswordOtp?: NullableStringFieldUpdateOperationsInput | string | null
     forgotPasswordOtpExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     provider?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     paymentMethods?: PaymentMethodUpdateManyWithoutUserNestedInput
@@ -12917,6 +13065,7 @@ export namespace Prisma {
     forgotPasswordOtp?: NullableStringFieldUpdateOperationsInput | string | null
     forgotPasswordOtpExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     provider?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     paymentMethods?: PaymentMethodUncheckedUpdateManyWithoutUserNestedInput
@@ -12986,6 +13135,7 @@ export namespace Prisma {
     forgotPasswordOtp?: string | null
     forgotPasswordOtpExpiry?: Date | string | null
     provider?: string | null
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     paymentMethods?: PaymentMethodCreateNestedManyWithoutUserInput
@@ -13006,6 +13156,7 @@ export namespace Prisma {
     forgotPasswordOtp?: string | null
     forgotPasswordOtpExpiry?: Date | string | null
     provider?: string | null
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     paymentMethods?: PaymentMethodUncheckedCreateNestedManyWithoutUserInput
@@ -13075,6 +13226,7 @@ export namespace Prisma {
     forgotPasswordOtp?: NullableStringFieldUpdateOperationsInput | string | null
     forgotPasswordOtpExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     provider?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     paymentMethods?: PaymentMethodUpdateManyWithoutUserNestedInput
@@ -13095,6 +13247,7 @@ export namespace Prisma {
     forgotPasswordOtp?: NullableStringFieldUpdateOperationsInput | string | null
     forgotPasswordOtpExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     provider?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     paymentMethods?: PaymentMethodUncheckedUpdateManyWithoutUserNestedInput
@@ -13167,6 +13320,7 @@ export namespace Prisma {
     amenities?: HotelCreateamenitiesInput | string[]
     totalRooms: number
     availableRooms: number
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -13206,6 +13360,8 @@ export namespace Prisma {
     status?: $Enums.WithdrawalStatus
     paymentMethodId: string
     remarks?: string | null
+    processedBy?: string | null
+    processedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -13263,6 +13419,7 @@ export namespace Prisma {
     amenities?: HotelUpdateamenitiesInput | string[]
     totalRooms?: IntFieldUpdateOperationsInput | number
     availableRooms?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     bookings?: BookingUpdateManyWithoutHotelNestedInput
@@ -13280,6 +13437,7 @@ export namespace Prisma {
     amenities?: HotelUpdateamenitiesInput | string[]
     totalRooms?: IntFieldUpdateOperationsInput | number
     availableRooms?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     bookings?: BookingUncheckedUpdateManyWithoutHotelNestedInput
@@ -13297,6 +13455,7 @@ export namespace Prisma {
     amenities?: HotelUpdateamenitiesInput | string[]
     totalRooms?: IntFieldUpdateOperationsInput | number
     availableRooms?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -13395,6 +13554,8 @@ export namespace Prisma {
     amount?: FloatFieldUpdateOperationsInput | number
     status?: EnumWithdrawalStatusFieldUpdateOperationsInput | $Enums.WithdrawalStatus
     remarks?: NullableStringFieldUpdateOperationsInput | string | null
+    processedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     paymentMethod?: PaymentMethodUpdateOneRequiredWithoutWithdrawalsNestedInput
@@ -13406,6 +13567,8 @@ export namespace Prisma {
     status?: EnumWithdrawalStatusFieldUpdateOperationsInput | $Enums.WithdrawalStatus
     paymentMethodId?: StringFieldUpdateOperationsInput | string
     remarks?: NullableStringFieldUpdateOperationsInput | string | null
+    processedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -13416,6 +13579,8 @@ export namespace Prisma {
     status?: EnumWithdrawalStatusFieldUpdateOperationsInput | $Enums.WithdrawalStatus
     paymentMethodId?: StringFieldUpdateOperationsInput | string
     remarks?: NullableStringFieldUpdateOperationsInput | string | null
+    processedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -13426,6 +13591,8 @@ export namespace Prisma {
     amount: number
     status?: $Enums.WithdrawalStatus
     remarks?: string | null
+    processedBy?: string | null
+    processedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -13435,6 +13602,8 @@ export namespace Prisma {
     amount?: FloatFieldUpdateOperationsInput | number
     status?: EnumWithdrawalStatusFieldUpdateOperationsInput | $Enums.WithdrawalStatus
     remarks?: NullableStringFieldUpdateOperationsInput | string | null
+    processedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutWithdrawalsNestedInput
@@ -13446,6 +13615,8 @@ export namespace Prisma {
     amount?: FloatFieldUpdateOperationsInput | number
     status?: EnumWithdrawalStatusFieldUpdateOperationsInput | $Enums.WithdrawalStatus
     remarks?: NullableStringFieldUpdateOperationsInput | string | null
+    processedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -13456,6 +13627,8 @@ export namespace Prisma {
     amount?: FloatFieldUpdateOperationsInput | number
     status?: EnumWithdrawalStatusFieldUpdateOperationsInput | $Enums.WithdrawalStatus
     remarks?: NullableStringFieldUpdateOperationsInput | string | null
+    processedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

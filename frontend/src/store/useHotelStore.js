@@ -20,7 +20,7 @@ export const useHotelStore = create((set) => ({
       toast.success(res.data.message);
       get().getHotelsByOwner();
     } catch (error) {
-      toast.error(error.response?.data?.message || "Failed to add hotel");
+      console.log("Error adding hotel:", error);
     } finally {
       set({ isAddingNewHotel: false });
     }

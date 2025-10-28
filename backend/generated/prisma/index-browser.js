@@ -132,6 +132,7 @@ exports.Prisma.UserScalarFieldEnum = {
   forgotPasswordOtp: 'forgotPasswordOtp',
   forgotPasswordOtpExpiry: 'forgotPasswordOtpExpiry',
   provider: 'provider',
+  isActive: 'isActive',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -163,6 +164,7 @@ exports.Prisma.HotelScalarFieldEnum = {
   amenities: 'amenities',
   totalRooms: 'totalRooms',
   availableRooms: 'availableRooms',
+  isActive: 'isActive',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -205,6 +207,8 @@ exports.Prisma.WithdrawalScalarFieldEnum = {
   status: 'status',
   paymentMethodId: 'paymentMethodId',
   remarks: 'remarks',
+  processedBy: 'processedBy',
+  processedAt: 'processedAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
